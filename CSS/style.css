@@ -1,0 +1,261 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #f1f1f1;
+    color: #333;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-img {
+    width: 120px;
+}
+
+.location-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.location-label {
+    font-size: 12px;
+    color: gray;
+}
+
+.location-select {
+    border: none;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* SEARCH */
+.search-box input {
+    width: 400px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #f5f5f5;
+}
+
+.search-box input:focus {
+    outline: none;
+    background: white;
+    border: 1px solid #ff5200;
+}
+
+/* NAV MENU */
+.nav-menu {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.nav-menu a:hover {
+    color: #ff5200;
+}
+
+.signin {
+    color: #ff5200;
+}
+
+/* BANNER */
+.banner {
+    background: linear-gradient(90deg, #f40404, #231010);
+    padding: 60px;
+    color: white;
+}
+
+.banner h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.banner p {
+    font-size: 18px;
+}
+
+/* CATEGORY SLIDER */
+.mind-section {
+    padding: 30px 40px;
+    background: white;
+}
+
+
+.mind-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mind-header h2 {
+    font-size: 22px;
+}
+
+.arrows button {
+    padding: 8px 14px;
+    margin-left: 5px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.arrows button:hover {
+    background: #ff5200;
+    color: white;
+}
+
+.slider-container {
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.slider {
+    display: flex;
+    gap: 20px;
+    transition: 0.4s ease;
+}
+
+.item {
+    min-width: 120px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.item img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.item img:hover {
+    transform: scale(1.1);
+}
+
+.item p {
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+/* RESTAURANTS SECTION */
+.restaurant-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+
+/* buttons */
+.slide-btn {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    background: white;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 10px 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
+}
+
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.card h3 {
+    padding: 10px 15px 0;
+}
+
+.card h3 a {
+    text-decoration: none;
+    color: #333;
+}
+
+.card p {
+    padding: 5px 15px;
+    color: gray;
+}
+
+.card span {
+    padding: 0 15px 15px;
+    display: block;
+    font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+    .search-box input {
+        width: 200px;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .banner {
+        padding: 30px;
+    }
+
+    .banner h1 {
+        font-size: 24px;
+    }
+
+}

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SNACCY Admin Panel</title>
+<link rel="stylesheet" href="CSS/theme.css">
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#fff1f1,#fff);
+}
+.header{
+    background:#111;
+    color:white;
+    padding:20px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.header h1{color:#ff5200}
+.header button{
+    background:#ff5200;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+}
+.container{
+    max-width:1200px;
+    margin:35px auto;
+    padding:25px;
+    background:rgba(255,255,255,.85);
+    border-radius:22px;
+    box-shadow:0 15px 40px rgba(0,0,0,.12);
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    padding:13px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+}
+th{
+    background:#fff1e8;
+    color:#ff5200;
+}
+select{
+    padding:8px;
+    border-radius:8px;
+}
+.status{
+    font-weight:bold;
+    color:green;
+}
+body.dark{
+    background:#111!important;
+    color:white!important;
+}
+body.dark .container{
+    background:rgba(25,25,25,.9)!important;
+}
+body.dark th{
+    background:#222;
+}
+body.dark td,
+body.dark th{
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>👨‍💻 SNACCY Admin Panel</h1>
+    <button onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+    <h2>📦 All Orders</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Total</th>
+                <th>City</th>
+                <th>Status</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody id="ordersBody"></tbody>
+    </table>
+</div>
+
+<script>
+let user = JSON.parse(localStorage.getItem("user"));
+let token = localStorage.getItem("token");
+
+if(!user || user.role !== "admin"){
+    alert("Admin only ❌");
+    location.href = "login.html";
+}
+
+function loadOrders(){
+    fetch("http://localhost:3000/admin/orders",{
+        headers:{ "Authorization": token }
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        let body=document.getElementById("ordersBody");
+        body.innerHTML="";
+
+        if(!Array.isArray(data) || data.length===0){
+            body.innerHTML="<tr><td colspan='7'>No orders found</td></tr>";
+            return;
+        }
+
+        data.forEach(o=>{
+            body.innerHTML += `
+            <tr>
+                <td>#${o.id}</td>
+                <td>${o.name || "-"}</td>
+                <td>${o.phone || "-"}</td>
+                <td>₹${o.total_price}</td>
+                <td>${o.city || "-"}</td>
+                <td class="status">${o.status || "Placed"}</td>
+                <td>
+                    <select onchange="updateStatus(${o.id}, this.value)">
+                        <option value="">Change</option>
+                        <option value="Placed">Placed</option>
+                        <option value="Preparing">Preparing</option>
+                        <option value="Out for Delivery">Out for Delivery</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </td>
+            </tr>`;
+        });
+    });
+}
+
+function updateStatus(id,status){
+    if(!status) return;
+
+    fetch(`http://localhost:3000/admin/order/${id}`,{
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization": token
+        },
+        body:JSON.stringify({status})
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.success){
+            alert("Status updated ✅");
+            loadOrders();
+        }else{
+            alert(data.message || "Update failed ❌");
+        }
+    });
+}
+
+function logout(){
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    location.href="login.html";
+}
+
+loadOrders();
+</script>
+
+<script src="theme.js"></script>
+</body>
+</html>

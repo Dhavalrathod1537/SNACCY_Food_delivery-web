@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>My Orders - SNACCY</title>
+
+<style>
+body{
+    font-family:Arial;
+    margin:0;
+    background:#f4f4f4;
+}
+
+.navbar{
+    background:#151212;
+    color:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.container{
+    max-width:900px;
+    margin:40px auto;
+}
+
+.order{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.item{
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid #eee;
+    padding:8px 0;
+}
+
+.total{
+    text-align:right;
+    margin-top:10px;
+    font-weight:bold;
+    color:#ff3c00;
+}
+
+.empty{
+    text-align:center;
+    margin-top:50px;
+    color:gray;
+}
+
+.btn{
+    margin-top:10px;
+    padding:8px 15px;
+    background:#ff3c00;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>My Orders</h2>
+    <a href="index.html" style="color:white;">Home</a>
+</div>
+
+<div class="container" id="ordersBox"></div>
+
+<script>
+
+function loadOrders(){
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if(!user){
+        document.getElementById("ordersBox").innerHTML =
+        "<div class='empty'>Please login first</div>";
+        return;
+    }
+
+    fetch(`http://localhost:3000/orders/${user.id}`)
+    .then(res => res.json())
+    .then(data => {
+
+        let box = document.getElementById("ordersBox");
+
+        if(data.length === 0){
+            box.innerHTML = "<div class='empty'>No orders yet 🍔</div>";
+            return;
+        }
+
+        box.innerHTML = "";
+
+        data.reverse().forEach(order => {
+
+            let items = JSON.parse(order.items);
+
+            let html = `
+            <div class="order">
+                <h3>Order #${order.id}</h3>
+            `;
+
+            items.forEach(item=>{
+                html += `
+                <div class="item">
+                    <span>${item.name} (x${item.qty})</span>
+                    <span>₹${item.price * item.qty}</span>
+                </div>
+                `;
+            });
+
+            html += `
+                <div class="total">Total: ₹${order.total_price}</div>
+                <button class="btn" onclick='viewInvoice(${JSON.stringify(order)}, ${JSON.stringify(items)})'>
+                    View Invoice
+                </button>
+            </div>
+            `;
+
+            box.innerHTML += html;
+
+        });
+
+    })
+    .catch(()=>{
+        document.getElementById("ordersBox").innerHTML =
+        "<div class='empty'>Server error ❌</div>";
+    });
+
+}
+
+function viewInvoice(order, items){
+
+    localStorage.setItem("orderData", JSON.stringify({
+        cart: items,
+        payment: "UPI",
+        name: order.name,
+        phone: order.phone,
+        address: order.address,
+        city: order.city
+    }));
+
+    window.location.href = "invoice.html";
+}
+
+loadOrders();
+
+</script>
+
+</body>
+</html>

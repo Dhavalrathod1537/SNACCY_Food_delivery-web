@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starbucks Menu</title>
+<style>
+body{font-family: Arial; margin:0; background:#f4f4f4;}
+.navbar{background:#006241; color:white; padding:15px 40px; display:flex; justify-content:space-between; align-items:center;}
+.navbar .nav-buttons button{background:white; color:#006241; border:none; padding:8px 18px; border-radius:8px; font-weight:bold; cursor:pointer; margin-left:10px; transition:0.3s;}
+.navbar .nav-buttons button:hover{background:#004d33; color:white;}
+.cart-count{background:red; color:white; font-size:12px; padding:2px 6px; border-radius:50%; margin-left:5px;}
+.menu-page{padding:40px 80px;}
+.menu-header{display:flex; gap:20px; background:white; padding:20px; border-radius:12px; align-items:center;}
+.menu-header img{width:200px; height:150px; border-radius:10px;}
+.rating{background:#006241; color:white; padding:4px 10px; border-radius:5px;}
+.menu-container{margin-top:20px; display:flex; flex-direction:column; gap:20px;}
+.menu-card{display:flex; justify-content:space-between; background:white; padding:18px; border-radius:10px; opacity:0; transform: translateY(20px); transition: all 0.5s ease;}
+.menu-card.show{opacity:1; transform: translateY(0);}
+.menu-card:hover{transform: scale(1.03); box-shadow:0 8px 20px rgba(0,0,0,0.2);}
+.price{color:#006241; font-weight:bold;}
+.food-image img{width:120px; height:100px; border-radius:10px;}
+.add-btn{margin-top:8px; background:white; color:#006241; border:2px solid #006241; padding:6px 15px; border-radius:8px; cursor:pointer; font-weight:bold; transition:0.2s;}
+.add-btn:hover{background:#006241; color:white;}
+.qty-box{margin-top:8px; display:none; align-items:center; justify-content:center; gap:10px;}
+.qty-box button{background:#006241; color:white; border:none; width:28px; height:28px; border-radius:6px; cursor:pointer;}
+.qty{font-weight:bold; font-size:16px; width:20px; text-align:center; display:inline-block; transition: transform 0.2s ease;}
+.qty.animate{transform: scale(1.3);}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+<div>☕ Starbucks</div>
+<div class="nav-buttons">
+<button onclick="goHome()">🏠 Home</button>
+<button onclick="goToCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+</div>
+</div>
+
+<section class="menu-page">
+
+<div class="menu-header">
+<img src="img/star logo.webp">
+<div class="menu-info">
+<h1>Starbucks</h1>
+<p>Coffee, Beverages, Desserts</p>
+<span class="rating">⭐ 4.5</span>
+</div>
+</div>
+
+<h2>Popular Items</h2>
+
+<div class="menu-container" id="menuContainer"></div>
+</section>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+const menuItems = [
+{name:"Cappuccino", price:250, img:"img/Cappuccino.webp", desc:"Fresh espresso with steamed milk"},
+{name:"Latte", price:270, img:"img/Caffe Latte.webp", desc:"Smooth coffee with milk foam"},
+{name:"Mocha", price:300, img:"img/Mocha.webp", desc:"Chocolate flavored coffee"},
+{name:"Cold Coffee", price:220, img:"img/cold.webp", desc:"Chilled blended coffee"},
+{name:"Blueberry Muffin", price:180, img:"img/Vanilla Cake.webp", desc:"Soft baked muffin with blueberries"},
+{name:"Caramel Macchiato", price:320, img:"img/Caffe Latte.webp", desc:"Espresso with caramel syrup"},
+{name:"Americano", price:200, img:"img/Caffe Latte.webp", desc:"Classic black coffee"},
+{name:"Frappuccino", price:350, img:"img/Frappuccino.webp", desc:"Iced blended coffee drink"},
+];
+
+const menuContainer = document.getElementById("menuContainer");
+
+menuItems.forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "menu-card";
+    card.innerHTML = `
+    <div>
+        <h3>${item.name}</h3>
+        <p>${item.desc}</p>
+        <div class="price">₹${item.price}</div>
+    </div>
+    <div class="food-image">
+        <img src="${item.img}"><br>
+        <button class="add-btn" id="add-${item.name}" onclick="addItem('${item.name}',${item.price},'${item.img}')">ADD</button>
+        <div class="qty-box" id="box-${item.name}">
+            <button onclick="changeQty('${item.name}',-1)">−</button>
+            <span class="qty" id="qty-${item.name}">1</span>
+            <button onclick="changeQty('${item.name}',1)">+</button>
+        </div>
+    </div>
+    `;
+    menuContainer.appendChild(card);
+});
+
+function addItem(name, price, image){
+    let found = cart.find(i=>i.name===name);
+    if(found) found.qty++;
+    else cart.push({name,price,image,qty:1});
+    saveCart();
+    updateUI();
+}
+
+function changeQty(name, change){
+    let item = cart.find(i=>i.name===name);
+    if(!item) return;
+    item.qty += change;
+    if(item.qty<=0) cart = cart.filter(i=>i.name!==name);
+    saveCart();
+    updateUI();
+    let qty = document.getElementById("qty-"+name);
+    if(qty){ qty.classList.add("animate"); setTimeout(()=> qty.classList.remove("animate"),200);}
+}
+
+function saveCart(){ localStorage.setItem("cart", JSON.stringify(cart)); }
+
+function updateUI(){
+    document.querySelectorAll(".add-btn").forEach(btn=>btn.style.display="inline-block");
+    document.querySelectorAll(".qty-box").forEach(box=>box.style.display="none");
+    cart.forEach(item=>{
+        let addBtn=document.getElementById("add-"+item.name);
+        let box=document.getElementById("box-"+item.name);
+        let qty=document.getElementById("qty-"+item.name);
+        if(addBtn && box && qty){
+            addBtn.style.display="none";
+            box.style.display="flex";
+            qty.innerText=item.qty;
+        }
+    });
+    let total = cart.reduce((sum,i)=>sum+i.qty,0);
+    document.getElementById("cartCount").innerText = total;
+}
+
+window.addEventListener('load', ()=>{
+    document.querySelectorAll(".menu-card").forEach((card,index)=>{
+        setTimeout(()=> card.classList.add("show"), index*100);
+    });
+});
+
+function goToCart(){ window.location.href="cart.html"; }
+function goHome(){ window.location.href="index.html"; }
+
+updateUI();
+</script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+body {
+    margin: 0;
+    font-family: Poppins;
+    background: #ff2e2e;
+    overflow: hidden;
+}
+
+/* container */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* form */
+.form-box {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* logo */
+.logo img {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+/* input */
+.input-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* button */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #fa6023;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* divider */
+.divider {
+    margin: 15px 0;
+    position: relative;
+}
+
+.divider span {
+    background: white;
+    padding: 5px;
+    color: #888;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    top: 50%;
+    left: 0;
+    z-index: -1;
+}
+
+/* social */
+.social-btn {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.social-btn img {
+    width: 20px;
+}
+
+/* shapes */
+.bg-shape {
+    position: absolute;
+    background: white;
+    width: 300px;
+    height: 100%;
+    border-radius: 50px;
+}
+
+.left {
+    left: -100px;
+}
+
+.right {
+    right: -100px;
+}
+
+body {
+    margin: 0;
+    font-family: Poppins;
+    background: #f6611d;
+    overflow: hidden;
+}
+
+/* container */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* form */
+.form-box {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* logo */
+.logo img {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+/* input */
+.input-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* button */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #ff2e2e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* divider */
+.divider {
+    margin: 15px 0;
+    position: relative;
+}
+
+.divider span {
+    background: white;
+    padding: 5px;
+    color: #888;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    top: 50%;
+    left: 0;
+    z-index: -1;
+}
+
+/* social */
+.social-btn {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.social-btn img {
+    width: 20px;
+}
+
+/* shapes */
+.bg-shape {
+    position: absolute;
+    background: white;
+    width: 300px;
+    height: 100%;
+    border-radius: 50px;
+}
+
+.left {
+    left: -100px;
+}
+
+.right {
+    right: -100px;
+}
+
+/* Stickers */
+.sticker {
+    position: absolute;
+    width: 90px;
+    z-index: 1;
+    animation: float 4s ease-in-out infinite;
+}
+
+.burger {
+    top: 80px;
+    left: 50px;
+}
+
+.pizza {
+    bottom: 100px;
+    right: 50px;
+}
+
+.drink {
+    top: 100px;
+    right: 40px;
+}
+
+.french {
+    bottom: 100px;
+    left: 50px;
+}
+
+.chocolate {
+    top: 47%;
+    left: 100px;
+    transform: translateY(-50%);
+}
+
+.hot {
+    top: 47%;
+    right: 100px;
+    transform: translateY(-50%);
+}
+
+
+/* floating animation */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* links */
+a {
+    color: red;
+    text-decoration: none;
+}
+
+
+/* links */
+a {
+    color: rgb(255, 112, 64);
+    text-decoration: none;
+}

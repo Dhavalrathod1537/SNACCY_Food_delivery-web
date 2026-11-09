@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lapino'z Pizza Menu</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f5f5f5;
+    margin:0;
+}
+
+/* NAVBAR */
+.navbar{
+    background:#ff5200;
+    color:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.navbar .logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.navbar .nav-buttons button{
+    background:white;
+    color:#ff5200;
+    border:none;
+    padding:8px 18px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-left:10px;
+    transition:0.3s;
+}
+
+.navbar .nav-buttons button:hover{
+    background:#e31837;
+    color:white;
+}
+
+/* CART COUNT */
+.cart-count{
+    background:red;
+    color:white;
+    font-size:12px;
+    padding:2px 6px;
+    border-radius:50%;
+    margin-left:5px;
+}
+
+/* PAGE */
+.menu-page{
+    padding:40px 80px;
+}
+
+/* HEADER */
+.menu-header{
+    display:flex;
+    gap:20px;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    align-items:center;
+}
+
+.menu-header img{
+    width:200px;
+    height:150px;
+    border-radius:10px;
+    object-fit:cover;
+}
+
+.rating{
+    background:green;
+    color:white;
+    padding:4px 10px;
+    border-radius:5px;
+}
+
+/* MENU */
+.menu-container{
+    margin-top:20px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.menu-card{
+    display:flex;
+    justify-content:space-between;
+    background:white;
+    padding:18px;
+    border-radius:10px;
+    opacity:0;
+    transform: translateY(20px);
+    transition: all 0.5s ease, box-shadow 0.3s ease;
+}
+
+.menu-card.show{
+    opacity:1;
+    transform: translateY(0);
+}
+
+.menu-card:hover{
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.food-image{
+    text-align:center;
+}
+
+.food-image img{
+    width:120px;
+    height:100px;
+    border-radius:10px;
+}
+
+/* ADD BUTTON */
+.add-btn{
+    margin-top:8px;
+    background:white;
+    color:#ff5200;
+    border:2px solid #ff5200;
+    padding:6px 18px;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+    transition: all 0.2s ease;
+}
+
+.add-btn:hover{
+    background:#ff5200;
+    color:white;
+    transform: scale(1.1);
+}
+
+/* QTY BOX */
+.qty-box{
+    margin-top:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+}
+
+.qty-box button{
+    background:#ff5200;
+    color:white;
+    border:none;
+    width:30px;
+    height:30px;
+    border-radius:6px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.qty{
+    font-weight:bold;
+    font-size:16px;
+    display:inline-block;
+    transition: transform 0.2s ease;
+}
+
+.qty.animate{
+    transform: scale(1.3);
+}
+
+.price{
+    color:#ff5200;
+    font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">🍕 Lapino'z Pizza</div>
+    <div class="nav-buttons">
+        <button onclick="goHome()">🏠 Home</button>
+        <button onclick="goToCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+    </div>
+</div>
+
+<section class="menu-page">
+
+<div class="menu-header">
+    <img src="img/lapi logo.webp">
+    <div>
+        <h1>Lapino'z Pizza</h1>
+        <p>Pizzas, Italian, Fast Food</p>
+        <span class="rating">⭐ 4.4</span>
+        <span>30 mins</span>
+        <span>₹200 for one</span>
+    </div>
+</div>
+
+<h2>Pizza Menu</h2>
+
+<div class="menu-container">
+
+<!-- ITEM 1 -->
+<div class="menu-card">
+    <div>
+        <h3>Margherita Pizza</h3>
+        <p>Classic cheese pizza</p>
+        <div class="price">₹149</div>
+    </div>
+    <div class="food-image">
+        <img src="img/marg.webp">
+        <button class="add-btn" id="add-Margherita Pizza" onclick="addItem('Margherita Pizza',149,'img/marg.webp')">ADD</button>
+        <div class="qty-box" id="box-Margherita Pizza" style="display:none;">
+            <button onclick="changeQty('Margherita Pizza',-1)">−</button>
+            <span class="qty" id="qty-Margherita Pizza">1</span>
+            <button onclick="changeQty('Margherita Pizza',1)">+</button>
+        </div>
+    </div>
+</div>
+
+<!-- ITEM 2 -->
+<div class="menu-card">
+    <div>
+        <h3>Farmhouse Pizza</h3>
+        <p>Veg loaded pizza</p>
+        <div class="price">₹249</div>
+    </div>
+    <div class="food-image">
+        <img src="img/farm.webp">
+        <button class="add-btn" id="add-Farmhouse Pizza" onclick="addItem('Farmhouse Pizza',249,'img/farm.webp')">ADD</button>
+        <div class="qty-box" id="box-Farmhouse Pizza" style="display:none;">
+            <button onclick="changeQty('Farmhouse Pizza',-1)">−</button>
+            <span class="qty" id="qty-Farmhouse Pizza">1</span>
+            <button onclick="changeQty('Farmhouse Pizza',1)">+</button>
+        </div>
+    </div>
+</div>
+
+<!-- ITEM 3 -->
+<div class="menu-card">
+    <div>
+        <h3>Pepperoni Pizza</h3>
+        <p>Cheese & pepperoni</p>
+        <div class="price">₹299</div>
+    </div>
+    <div class="food-image">
+        <img src="img/chi.webp">
+        <button class="add-btn" id="add-Pepperoni Pizza" onclick="addItem('Pepperoni Pizza',299,'img/chi.webp')">ADD</button>
+        <div class="qty-box" id="box-Pepperoni Pizza" style="display:none;">
+            <button onclick="changeQty('Pepperoni Pizza',-1)">−</button>
+            <span class="qty" id="qty-Pepperoni Pizza">1</span>
+            <button onclick="changeQty('Pepperoni Pizza',1)">+</button>
+        </div>
+    </div>
+</div>
+
+<!-- NEW ITEMS -->
+<div class="menu-card">
+    <div>
+        <h3>Veggie Supreme</h3>
+        <p>Mixed veggies and cheese</p>
+        <div class="price">₹279</div>
+    </div>
+    <div class="food-image">
+        <img src="img/vegg.webp">
+        <button class="add-btn" id="add-Veggie Supreme" onclick="addItem('Veggie Supreme',279,'img/vegg.webp')">ADD</button>
+        <div class="qty-box" id="box-Veggie Supreme" style="display:none;">
+            <button onclick="changeQty('Veggie Supreme',-1)">−</button>
+            <span class="qty" id="qty-Veggie Supreme">1</span>
+            <button onclick="changeQty('Veggie Supreme',1)">+</button>
+        </div>
+    </div>
+</div>
+
+<div class="menu-card">
+    <div>
+        <h3>Chicken Tandoori</h3>
+        <p>Spicy tandoori chicken</p>
+        <div class="price">₹329</div>
+    </div>
+    <div class="food-image">
+        <img src="img/hotwing.webp">
+        <button class="add-btn" id="add-Chicken Tandoori" onclick="addItem('Chicken Tandoori',329,'img/hotwing.webp')">ADD</button>
+        <div class="qty-box" id="box-Chicken Tandoori" style="display:none;">
+            <button onclick="changeQty('Chicken Tandoori',-1)">−</button>
+            <span class="qty" id="qty-Chicken Tandoori">1</span>
+            <button onclick="changeQty('Chicken Tandoori',1)">+</button>
+        </div>
+    </div>
+</div>
+
+<div class="menu-card">
+    <div>
+        <h3>Mexican Green Wave</h3>
+        <p>Jalapenos, capsicum & cheese</p>
+        <div class="price">₹289</div>
+    </div>
+    <div class="food-image">
+        <img src="img/pizzzs.jpg">
+        <button class="add-btn" id="add-Mexican Green Wave" onclick="addItem('Mexican Green Wave',289,'img/pizzzs.jpg')">ADD</button>
+        <div class="qty-box" id="box-Mexican Green Wave" style="display:none;">
+            <button onclick="changeQty('Mexican Green Wave',-1)">−</button>
+            <span class="qty" id="qty-Mexican Green Wave">1</span>
+            <button onclick="changeQty('Mexican Green Wave',1)">+</button>
+        </div>
+    </div>
+</div>
+
+<div class="menu-card">
+    <div>
+        <h3>Paneer Tikka</h3>
+        <p>Grilled paneer with spices</p>
+        <div class="price">₹269</div>
+    </div>
+    <div class="food-image">
+        <img src="img/panner.webp">
+        <button class="add-btn" id="add-Paneer Tikka" onclick="addItem('Paneer Tikka',269,'img/panner.webp')">ADD</button>
+        <div class="qty-box" id="box-Paneer Tikka" style="display:none;">
+            <button onclick="changeQty('Paneer Tikka',-1)">−</button>
+            <span class="qty" id="qty-Paneer Tikka">1</span>
+            <button onclick="changeQty('Paneer Tikka',1)">+</button>
+        </div>
+    </div>
+</div>
+
+</div>
+</section>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function addItem(name,price,image){
+    let found = cart.find(i=>i.name===name);
+    if(found) found.qty++;
+    else cart.push({name,price,image,qty:1});
+    saveCart();
+    updateUI();
+}
+
+function changeQty(name,change){
+    let item = cart.find(i=>i.name===name);
+    if(!item) return;
+    item.qty += change;
+    if(item.qty <= 0) cart = cart.filter(i=>i.name!==name);
+    saveCart();
+    updateUI();
+
+    let qty = document.getElementById("qty-"+name);
+    if(qty){
+        qty.classList.add("animate");
+        setTimeout(()=> qty.classList.remove("animate"),200);
+    }
+}
+
+function saveCart(){ localStorage.setItem("cart",JSON.stringify(cart)); }
+
+function updateUI(){
+    document.querySelectorAll(".add-btn").forEach(btn=>btn.style.display="inline-block");
+    document.querySelectorAll(".qty-box").forEach(box=>box.style.display="none");
+
+    cart.forEach(item=>{
+        let addBtn=document.getElementById("add-"+item.name);
+        let box=document.getElementById("box-"+item.name);
+        let qty=document.getElementById("qty-"+item.name);
+
+        if(addBtn && box && qty){
+            addBtn.style.display="none";
+            box.style.display="flex";
+            qty.innerText=item.qty;
+        }
+    });
+
+    // update cart count
+    let total = cart.reduce((sum,i)=>sum+i.qty,0);
+    document.getElementById("cartCount").innerText = total;
+}
+
+// Animate menu cards
+window.addEventListener('load', ()=>{
+    document.querySelectorAll(".menu-card").forEach((card,index)=>{
+        setTimeout(()=> card.classList.add("show"), index*100);
+    });
+});
+
+function goToCart(){ window.location.href="cart.html"; }
+function goHome(){ window.location.href="index.html"; }
+
+updateUI();
+</script>
+
+</body>
+</html>

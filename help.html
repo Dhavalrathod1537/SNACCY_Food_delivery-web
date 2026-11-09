@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help & Support - SNACCY</title>
+
+<link rel="stylesheet" href="CSS/theme.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+(function(){
+    emailjs.init("a2oV60P56MKqOuG-S"); // your public key
+})();
+</script>   
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Roboto',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#fff1f1,#ffffff,#ffe2d3);
+    color:#222;
+}
+
+/* HEADER */
+.header{
+    padding:22px 0;
+    background:rgba(15,15,15,.92);
+    color:white;
+    backdrop-filter:blur(18px);
+    box-shadow:0 14px 35px rgba(0,0,0,.22);
+    border-radius:0 0 28px 28px;
+}
+
+.header-container{
+    max-width:1150px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 24px;
+}
+
+.header h1{
+    font-size:34px;
+    font-weight:900;
+}
+
+.home-btn{
+    background:white;
+    color:#ff5200;
+    padding:12px 24px;
+    border-radius:999px;
+    text-decoration:none;
+    font-weight:900;
+    box-shadow:0 12px 28px rgba(0,0,0,.18);
+    transition:.3s;
+}
+
+.home-btn:hover{
+    transform:translateY(-3px);
+}
+
+/* HERO */
+.help-hero{
+    max-width:1150px;
+    margin:34px auto 0;
+    padding:50px 30px;
+    border-radius:32px;
+    background:linear-gradient(135deg,#ff5200,#ff9f1c,#ff1744);
+    color:white;
+    text-align:center;
+    box-shadow:0 25px 60px rgba(255,82,0,.35);
+    position:relative;
+    overflow:hidden;
+}
+
+.help-hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at 20% 20%,rgba(255,255,255,.35),transparent 25%),
+    radial-gradient(circle at 80% 10%,rgba(255,255,255,.25),transparent 24%);
+}
+
+.help-hero h2,
+.help-hero p{
+    position:relative;
+    color:white;
+}
+
+.help-hero h2{
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.help-hero p{
+    font-size:18px;
+}
+
+/* LAYOUT */
+.container{
+    max-width:1150px;
+    margin:34px auto;
+    padding:0 24px;
+}
+
+.support-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:28px;
+}
+
+/* GLASS CARD */
+.support-form,
+.quick-card,
+.faq-section,
+.chatbot{
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.45);
+    border-radius:26px;
+    box-shadow:0 18px 45px rgba(0,0,0,.10);
+    padding:28px;
+    color:#222;
+    animation:fadeUp .7s ease both;
+}
+
+.support-form h2,
+.faq-section h2,
+.chatbot h2{
+    margin-bottom:18px;
+    font-size:26px;
+    color:#222;
+}
+
+.support-form input,
+.support-form textarea{
+    width:100%;
+    padding:14px;
+    margin-bottom:13px;
+    border:1px solid #ddd;
+    border-radius:14px;
+    outline:none;
+    font-size:15px;
+    background:rgba(255,255,255,.95);
+}
+
+.support-form input:focus,
+.support-form textarea:focus{
+    border-color:#ff5200;
+    box-shadow:0 0 0 5px rgba(255,82,0,.14);
+}
+
+.btn{
+    background:linear-gradient(135deg,#ff5200,#ff1744);
+    color:white;
+    border:none;
+    padding:14px 28px;
+    border-radius:999px;
+    cursor:pointer;
+    font-weight:900;
+    box-shadow:0 12px 30px rgba(255,82,0,.28);
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+/* QUICK HELP */
+.quick-help{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.quick-card h3{
+    color:#ff5200;
+    margin-bottom:8px;
+}
+
+.quick-card p{
+    color:#555;
+    line-height:1.5;
+}
+
+/* CHAT BOT */
+.chatbot{
+    margin-top:28px;
+}
+
+.chat-window{
+    height:230px;
+    overflow-y:auto;
+    background:rgba(255,255,255,.65);
+    border-radius:18px;
+    padding:15px;
+    margin-bottom:14px;
+}
+
+.msg{
+    padding:10px 14px;
+    border-radius:14px;
+    margin-bottom:10px;
+    max-width:80%;
+    line-height:1.4;
+}
+
+.bot{
+    background:#fff1e8;
+    color:#222;
+}
+
+.user{
+    background:#ff5200;
+    color:white;
+    margin-left:auto;
+}
+
+.chat-input{
+    display:flex;
+    gap:10px;
+}
+
+.chat-input input{
+    flex:1;
+    padding:13px;
+    border-radius:999px;
+    border:1px solid #ddd;
+}
+
+.chat-input button{
+    border:none;
+    padding:13px 18px;
+    border-radius:999px;
+    background:#ff5200;
+    color:white;
+    font-weight:900;
+    cursor:pointer;
+}
+
+/* FAQ */
+.faq-section{
+    margin-top:28px;
+}
+
+.faq{
+    border-bottom:1px solid rgba(0,0,0,.08);
+    padding:16px 0;
+    cursor:pointer;
+}
+
+.faq-question{
+    font-weight:900;
+    position:relative;
+    color:#222;
+    padding-right:30px;
+}
+
+.faq-question::after{
+    content:'+';
+    position:absolute;
+    right:0;
+    color:#ff5200;
+    font-size:22px;
+}
+
+.faq.active .faq-question::after{
+    content:'-';
+}
+
+.faq-answer{
+    display:none;
+    margin-top:9px;
+    color:#555;
+    line-height:1.5;
+}
+
+.faq.active .faq-answer{
+    display:block;
+}
+
+/* FOOTER */
+.footer{
+    margin-top:60px;
+    padding:36px;
+    text-align:center;
+    background:linear-gradient(135deg,#0b0b0b,#1b1b1b);
+    color:white;
+    border-radius:28px 28px 0 0;
+}
+
+/* DARK FIX */
+body.dark{
+    background:linear-gradient(135deg,#070707,#171717,#2a0f0f)!important;
+    color:white!important;
+}
+
+body.dark .header{
+    background:rgba(10,10,10,.94)!important;
+}
+
+body.dark .support-form,
+body.dark .quick-card,
+body.dark .faq-section,
+body.dark .chatbot{
+    background:rgba(25,25,25,.9)!important;
+    color:white!important;
+    border:1px solid rgba(255,255,255,.08)!important;
+}
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark p,
+body.dark div,
+body.dark span,
+body.dark label,
+body.dark .faq-question,
+body.dark .faq-answer{
+    color:white!important;
+}
+
+body.dark .quick-card p,
+body.dark .faq-answer{
+    color:#ddd!important;
+}
+
+body.dark input,
+body.dark textarea{
+    background:#1f1f1f!important;
+    color:white!important;
+    border:1px solid #555!important;
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+    color:#aaa!important;
+}
+
+body.dark .home-btn{
+    background:#ff5200!important;
+    color:white!important;
+}
+
+body.dark .chat-window{
+    background:rgba(0,0,0,.35)!important;
+}
+
+body.dark .bot{
+    background:#2b2b2b!important;
+    color:white!important;
+}
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(25px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:768px){
+    .support-grid{
+        grid-template-columns:1fr;
+    }
+
+    .header-container{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .help-hero h2{
+        font-size:30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <h1>Help & Support</h1>
+        <a href="index.html" class="home-btn">🏠 Home</a>
+    </div>
+</header>
+
+<section class="help-hero">
+    <h2>How can we help you today?</h2>
+    <p>Get fast help for orders, payments, refunds, delivery tracking and account issues.</p>
+</section>
+
+<div class="container">
+
+    <div class="support-grid">
+
+        <div class="support-form">
+            <h2>Contact Support</h2>
+
+            <input type="text" id="name" placeholder="Your Name">
+            <input type="email" id="email" placeholder="Your Email">
+            <textarea id="message" rows="5" placeholder="Describe your problem"></textarea>
+
+            <button class="btn" onclick="sendMail()">Send Message</button>
+        </div>
+
+        <div class="quick-help">
+            <div class="quick-card">
+                <h3>🚚 Order Issue</h3>
+                <p>Track delayed orders, wrong items, missing items and delivery problems.</p>
+            </div>
+
+            <div class="quick-card">
+                <h3>💳 Payment Help</h3>
+                <p>Get support for failed payments, refunds, UPI, Razorpay and COD orders.</p>
+            </div>
+
+            <div class="quick-card">
+                <h3>🔔 Notifications</h3>
+                <p>Receive real-time updates from order placed to delivered.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="chatbot">
+        <h2>🤖 SNACCY Help Bot</h2>
+
+        <div class="chat-window" id="chatWindow">
+            <div class="msg bot">Hi 👋 I’m SNACCY Bot. Ask me about order, payment, refund, delivery or login.</div>
+        </div>
+
+        <div class="chat-input">
+            <input id="chatInput" placeholder="Ask something...">
+            <button onclick="askBot()">Send</button>
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq">
+            <div class="faq-question">How do I place an order?</div>
+            <div class="faq-answer">Select a restaurant, add items to cart, and complete checkout with UPI or Cash on Delivery.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">How can I track my order?</div>
+            <div class="faq-answer">Go to Profile → Order History → Track Order to see live delivery status.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">What payment methods are accepted?</div>
+            <div class="faq-answer">SNACCY supports UPI, Razorpay payment flow, and Cash on Delivery.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">How do I contact support?</div>
+            <div class="faq-answer">Fill this form and click Send Message. Your query will be sent to support email.</div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <p>© 2026 SNACCY. All Rights Reserved.</p>
+</footer>
+
+<script>
+document.querySelectorAll(".faq").forEach(faq=>{
+    faq.addEventListener("click",()=>{
+        faq.classList.toggle("active");
+    });
+});
+
+function sendMail(){
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if(!name || !email || !message){
+        alert("Please fill all fields ❌");
+        return;
+    }
+
+    const user = JSON.parse(localStorage.getItem("user")) || {};
+
+    fetch("http://localhost:3000/support-ticket", {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            user_id:user.id || null,
+            name,
+            email,
+            message
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.success){
+
+            const params = {
+                from_name:name,
+                from_email:email,
+                message:message,
+                reply_to:email,
+                ticket_id:data.ticket_id
+            };
+
+            emailjs.send("service_yh4dqza","template_mgi9bxt",params);
+
+            alert("Support ticket created ✅ Ticket ID: " + data.ticket_id);
+
+            document.getElementById("name").value="";
+            document.getElementById("email").value="";
+            document.getElementById("message").value="";
+
+        }else{
+            alert(data.message || "Ticket failed ❌");
+        }
+    })
+    .catch(err=>{
+        console.log(err);
+        alert("Server error ❌");
+    });
+}
+function askBot(){
+    const input = document.getElementById("chatInput");
+    const chat = document.getElementById("chatWindow");
+    const text = input.value.trim();
+
+    if(!text) return;
+
+    chat.innerHTML += `<div class="msg user">${text}</div>`;
+
+    let reply = "Please contact support using the form above. Our team will help you soon.";
+
+    const q = text.toLowerCase();
+
+    if(q.includes("order")){
+        reply = "You can track your order from Profile → Order History → Track Order.";
+    }else if(q.includes("payment") || q.includes("upi") || q.includes("razorpay")){
+        reply = "For payment issues, check if money was deducted. Refunds usually reflect within 3–5 working days.";
+    }else if(q.includes("refund")){
+        reply = "Refunds are processed after order cancellation or failed payment verification.";
+    }else if(q.includes("delivery")){
+        reply = "Delivery status updates live when admin changes order status.";
+    }else if(q.includes("login")){
+        reply = "For login issues, check email/password or signup again with OTP verification.";
+    }
+
+    setTimeout(()=>{
+        chat.innerHTML += `<div class="msg bot">${reply}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+    },500);
+
+    input.value="";
+}
+</script>
+
+<script src="theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNACCY Sign Up</title>
+
+<link rel="stylesheet" href="CSS/logstyle.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="CSS/theme.css">
+</head>
+<body>
+<script src="theme.js"></script>
+<div class="bg-shape left"></div>
+<div class="bg-shape right"></div>
+
+<img src="img/burger.png" class="sticker burger">
+<img src="img/pizza.png" class="sticker pizza">
+<img src="img/fast-food.png" class="sticker drink">
+<img src="img/french-fries.png" class="sticker french">
+<img src="img/chocolate.png" class="sticker chocolate">
+<img src="img/hot-dog.png" class="sticker hot">
+
+<div class="container">
+
+<div class="form-box">
+
+<div class="logo">
+<img src="img/logo1.png">
+</div>
+
+<h2>Sign Up</h2>
+
+<form onsubmit="event.preventDefault(); signup();">
+
+<div class="input-box">
+<input type="text" id="name" placeholder="Full Name" required>
+</div>
+
+<div class="input-box">
+<input type="email" id="email" placeholder="Email Address" required>
+</div>
+
+<div class="input-box">
+<input type="password" id="password" placeholder="Password" required>
+</div>
+
+<div class="input-box">
+<input type="password" id="confirm" placeholder="Confirm Password" required>
+</div>
+
+<button type="submit" class="btn">Create Account</button>
+
+</form>
+
+<p>
+Already have account?
+<a href="login.html">Login</a>
+</p>
+
+</div>
+</div>
+
+<script>
+let savedEmail = "";
+
+function signup() {
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value.trim();
+    let confirm = document.getElementById("confirm").value.trim();
+
+    if (!name || !email || !password || !confirm) {
+        alert("Please fill all fields ❌");
+        return;
+    }
+
+    if (password !== confirm) {
+        alert("Password not match ❌");
+        return;
+    }
+
+    fetch("http://localhost:3000/send-signup-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            savedEmail = email;
+
+            let otp = prompt("OTP sent ✅ Enter OTP:");
+
+            if (!otp) {
+                alert("OTP required ❌");
+                return;
+            }
+
+            verifySignupOtp(otp);
+        } else {
+            alert(data.message || "OTP send failed ❌");
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        alert("Server Error ❌");
+    });
+}
+
+function verifySignupOtp(otp) {
+    fetch("http://localhost:3000/verify-signup-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: savedEmail,
+            otp: otp.trim()
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert("Signup Successful ✅");
+            window.location.replace("login.html");
+        } else {
+            alert(data.message || "Invalid OTP ❌");
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        alert("Server Error ❌");
+    });
+}
+</script>
+
+</body>
+</html>

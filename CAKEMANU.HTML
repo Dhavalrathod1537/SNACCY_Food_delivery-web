@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Cake Menu</title>
+
+<style>
+
+body {
+    font-family: Arial;
+    background: #dde1f8;
+    margin: 0;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #567a8e;
+    color: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar button {
+    background: white;
+    color: black;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+    transition:0.3s;
+}
+
+.navbar button:hover{
+    background:#eee;
+}
+
+/* CART COUNT */
+.cart-count{
+    background:red;
+    color:white;
+    font-size:12px;
+    padding:2px 6px;
+    border-radius:50%;
+    margin-left:5px;
+}
+
+/* PAGE */
+.menu-page {
+    padding: 40px 80px;
+}
+
+/* HEADER */
+.menu-header {
+    display: flex;
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.menu-header img {
+    width: 200px;
+    height: 150px;
+    border-radius: 10px;
+}
+
+.rating {
+    background: green;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 5px;
+}
+
+/* MENU */
+.menu-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu-card {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 18px;
+    border-radius: 10px;
+    transition:0.3s;
+}
+
+.menu-card:hover{
+    transform:scale(1.02);
+}
+
+/* PRICE */
+.price {
+    color: #ff5200;
+    font-weight: bold;
+}
+
+/* IMAGE */
+.food-image img {
+    width: 120px;
+    height: 100px;
+    border-radius: 10px;
+}
+
+/* ADD BUTTON */
+.add-btn {
+    margin-top: 8px;
+    background: white;
+    color: #ff5200;
+    border: 2px solid #ff5200;
+    padding: 6px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* QTY BOX */
+.qty-box {
+    margin-top: 8px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.qty-box button {
+    background: #ff5200;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.qty {
+    font-weight: bold;
+    width: 20px;
+    text-align: center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+<div>🎂 Live Cake Bakery</div>
+
+<div>
+<button onclick="goToHome()">🏠 Home</button>
+
+<button onclick="goToCart()">
+🛒 Cart <span class="cart-count" id="cartCount">0</span>
+</button>
+
+</div>
+
+</div>
+
+<section class="menu-page">
+
+<!-- HEADER -->
+<div class="menu-header">
+<img src="img/cake logo.webp">
+<div>
+<h1>Live Cake Bakery</h1>
+<p>Bakery, Cakes, Desserts</p>
+<span class="rating">⭐ 4.6</span>
+</div>
+</div>
+
+<h2>Cake Menu</h2>
+
+<div class="menu-container">
+
+<!-- ITEM -->
+<div class="menu-card">
+<div>
+<h3>Chocolate Cake</h3>
+<p>Rich chocolate cake</p>
+<div class="price">₹299</div>
+</div>
+
+<div class="food-image">
+<img src="img/cococ cake.webp"><br>
+
+<button class="add-btn" id="add-Chocolate Cake"
+onclick="addItem('Chocolate Cake',299,'img/cococ cake.webp')">ADD</button>
+
+<div class="qty-box" id="box-Chocolate Cake">
+<button onclick="changeQty('Chocolate Cake',-1)">−</button>
+<span class="qty" id="qty-Chocolate Cake">1</span>
+<button onclick="changeQty('Chocolate Cake',1)">+</button>
+</div>
+</div>
+</div>
+
+<!-- ITEM -->
+<div class="menu-card">
+<div>
+<h3>Black Forest Cake</h3>
+<p>Chocolate cherry cake</p>
+<div class="price">₹349</div>
+</div>
+
+<div class="food-image">
+<img src="img/Black Forest Cake.webp"><br>
+
+<button class="add-btn" id="add-Black Forest Cake"
+onclick="addItem('Black Forest Cake',349,'img/Black Forest Cake.webp')">ADD</button>
+
+<div class="qty-box" id="box-Black Forest Cake">
+<button onclick="changeQty('Black Forest Cake',-1)">−</button>
+<span class="qty" id="qty-Black Forest Cake">1</span>
+<button onclick="changeQty('Black Forest Cake',1)">+</button>
+</div>
+</div>
+</div>
+
+<!-- ITEM -->
+<div class="menu-card">
+<div>
+<h3>Vanilla Cake</h3>
+<p>Classic vanilla cake</p>
+<div class="price">₹249</div>
+</div>
+
+<div class="food-image">
+<img src="img/Vanilla Cake.webp"><br>
+
+<button class="add-btn" id="add-Vanilla Cake"
+onclick="addItem('Vanilla Cake',249,'img/Vanilla Cake.webp')">ADD</button>
+
+<div class="qty-box" id="box-Vanilla Cake">
+<button onclick="changeQty('Vanilla Cake',-1)">−</button>
+<span class="qty" id="qty-Vanilla Cake">1</span>
+<button onclick="changeQty('Vanilla Cake',1)">+</button>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+/* ADD ITEM */
+function addItem(name, price, img){
+let existing = cart.find(i => i.name === name);
+
+if(existing){
+existing.qty++;
+}else{
+cart.push({name, price, img, qty:1});
+}
+
+saveCart();
+updateUI();
+}
+
+/* CHANGE QTY */
+function changeQty(name, change){
+let item = cart.find(i => i.name === name);
+
+if(item){
+item.qty += change;
+
+if(item.qty <= 0){
+cart = cart.filter(i => i.name !== name);
+}
+}
+
+saveCart();
+updateUI();
+}
+
+/* SAVE */
+function saveCart(){
+localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+/* UPDATE UI */
+function updateUI(){
+
+// reset
+document.querySelectorAll(".add-btn").forEach(btn=>btn.style.display="inline-block");
+document.querySelectorAll(".qty-box").forEach(box=>box.style.display="none");
+
+// update items
+cart.forEach(item=>{
+let addBtn = document.getElementById("add-"+item.name);
+let box = document.getElementById("box-"+item.name);
+let qty = document.getElementById("qty-"+item.name);
+
+if(addBtn){
+addBtn.style.display="none";
+box.style.display="flex";
+qty.innerText=item.qty;
+}
+});
+
+// update cart count
+let total = cart.reduce((sum,i)=>sum+i.qty,0);
+document.getElementById("cartCount").innerText = total;
+
+}
+
+/* NAV */
+function goToHome(){
+window.location.href="index.html";
+}
+
+function goToCart(){
+window.location.href="cart.html";
+}
+
+updateUI();
+
+</script>
+
+</body>
+</html>

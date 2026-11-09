@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SNACCY Profile</title>
+<link rel="stylesheet" href="CSS/theme.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:'Roboto',sans-serif;
+    background:linear-gradient(135deg,#f5f6fa,#fff1f1);
+    color:#222;
+    transition:background .5s,color .5s;
+}
+
+body.dark{
+    background:linear-gradient(135deg,#090909,#1a1a1a);
+    color:#eee;
+}
+
+.container{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+    width:240px;
+    background:rgba(255,255,255,.75);
+    backdrop-filter:blur(18px);
+    height:100vh;
+    padding:20px;
+    border-right:1px solid rgba(255,255,255,.35);
+    box-shadow:8px 0 30px rgba(0,0,0,.08);
+    transition:.4s;
+}
+
+body.dark .sidebar{
+    background:rgba(25,25,25,.75);
+    border-right:1px solid rgba(255,255,255,.08);
+}
+
+.logo{
+    font-size:24px;
+    font-weight:700;
+    color:#ff4d4d;
+    margin-bottom:25px;
+}
+
+.sidebar div{
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:8px;
+    transition:.3s;
+}
+
+.sidebar div:hover{
+    background:rgba(255,77,77,.12);
+    transform:translateX(5px);
+}
+
+/* MAIN */
+.main{flex:1;padding:30px}
+
+/* CARD */
+.card{
+    background:rgba(255,255,255,.72);
+    backdrop-filter:blur(16px);
+    padding:22px;
+    border-radius:18px;
+    margin-bottom:22px;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    border:1px solid rgba(255,255,255,.35);
+    transition:.4s;
+}
+
+body.dark .card{
+    background:rgba(30,30,30,.7);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+/* PROFILE */
+.profile{display:flex;align-items:center;gap:18px}
+
+.avatar{
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ff4d4d,#ff8c00);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    font-weight:700;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(255,77,77,.35);
+}
+
+.avatar img{width:100%;height:100%;object-fit:cover}
+
+.name{font-size:20px;font-weight:700}
+
+.verified{
+    background:#18b957;
+    color:white;
+    padding:4px 8px;
+    border-radius:999px;
+    font-size:12px;
+    margin-left:6px;
+}
+
+.userid{font-size:12px;color:#777;margin-top:4px}
+body.dark .userid{color:#aaa}
+
+.upload{
+    font-size:13px;
+    color:#ff4d4d;
+    cursor:pointer;
+    margin-top:6px;
+}
+
+/* FORM */
+.field{margin-bottom:15px}
+.field label{font-size:13px;color:#666}
+body.dark .field label{color:#bbb}
+
+.field input,.field select{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+    transition:.3s;
+}
+
+body.dark input,
+body.dark select{
+    background:#222;
+    color:#fff;
+    border:1px solid #444;
+}
+
+.field input:focus,.field select:focus{
+    border-color:#ff4d4d;
+    box-shadow:0 0 0 3px rgba(255,77,77,.15);
+}
+
+.btn{
+    width:100%;
+    padding:13px;
+    background:#111;
+    color:white;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:#ff4d4d;
+    transform:translateY(-2px);
+}
+
+/* NOTIFICATION */
+#notifBox{
+    display:none;
+    position:fixed;
+    top:80px;
+    right:30px;
+    width:320px;
+    background:white;
+    color:black;
+    padding:18px;
+    border-radius:16px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+    z-index:9998;
+}
+
+body.dark #notifBox{
+    background:#1f1f1f;
+    color:white;
+}
+
+/* THEME ANIMATION */
+#themeAnim{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:9999;
+}
+
+.sun,.moon{
+    position:absolute;
+    left:50%;
+    bottom:-140px;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    transform:translateX(-50%);
+    animation:rise 1.6s ease forwards;
+}
+
+.sun{
+    background:radial-gradient(circle,#fff176,#ff9800);
+    box-shadow:0 0 80px #ff9800;
+}
+
+.moon{
+    background:radial-gradient(circle,#fff,#aaa);
+    box-shadow:0 0 80px #fff;
+}
+
+@keyframes rise{
+    0%{bottom:-140px;opacity:1}
+    70%{bottom:45%;opacity:1}
+    100%{bottom:60%;opacity:0}
+}
+</style>
+</head>
+
+<body>
+<script src="theme.js"></script>
+<div id="themeAnim"></div>
+
+<div id="notifBox">
+    <h3>🔔 Notifications</h3>
+    <div id="notifList">Loading...</div>
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+    <div class="logo">SNACCY</div>
+    <div onclick="goHome()">🏠 Home</div>
+    <div>👤 Profile</div>
+    <div onclick="goTracking()">🚴 Track Orders</div>
+    <div onclick="toggleNotifications()">🔔 Notifications <span id="notifCount">0</span></div>
+    <div onclick="toggleTheme()" id="themeBtn">🌙 Dark Mode</div>
+    <div onclick="logout()">🚪 Logout</div>
+</div>
+
+<div class="main">
+
+<div class="card">
+    <div class="profile">
+        <div class="avatar" id="avatar"></div>
+
+        <div>
+            <div class="name">
+                <span id="name"></span>
+                <span class="verified">✔ Verified</span>
+            </div>
+            <div class="userid">User ID: <span id="uid"></span></div>
+            <div class="upload" onclick="upload()">Change Photo</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Personal Information</h3>
+
+    <div class="field">
+        <label>Name</label>
+        <input id="i_name">
+    </div>
+
+    <div class="field">
+        <label>Email</label>
+        <input id="i_email">
+    </div>
+
+    <div class="field">
+        <label>Mobile</label>
+        <input id="i_phone" placeholder="+91XXXXXXXXXX">
+    </div>
+
+    <div class="field">
+        <label>Date of Birth</label>
+        <input type="date" id="i_dob">
+    </div>
+
+    <div class="field">
+        <label>Gender</label>
+        <select id="i_gender">
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+        </select>
+    </div>
+
+    <button class="btn" id="editBtn" onclick="enableEdit()">Edit Profile</button>
+</div>
+
+<div class="card">
+    <h3>Order History</h3>
+    <div id="orders"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+const i_name = document.getElementById("i_name");
+const i_email = document.getElementById("i_email");
+const i_phone = document.getElementById("i_phone");
+const i_dob = document.getElementById("i_dob");
+const i_gender = document.getElementById("i_gender");
+const avatar = document.getElementById("avatar");
+
+let user = JSON.parse(localStorage.getItem("user")) || {};
+let token = localStorage.getItem("token");
+
+if(!user.id){
+    alert("Login first ❌");
+    location.href="login.html";
+}
+
+/* THEME */
+function applyTheme(mode){
+    document.body.classList.toggle("dark", mode === "dark");
+    localStorage.setItem("theme", mode);
+
+    document.getElementById("themeBtn").innerText =
+        mode === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+}
+
+function animateTheme(mode){
+    const box = document.getElementById("themeAnim");
+    const el = document.createElement("div");
+    el.className = mode === "dark" ? "moon" : "sun";
+    box.appendChild(el);
+    setTimeout(()=>el.remove(),1600);
+}
+
+function toggleTheme(){
+    let current = localStorage.getItem("theme") || "light";
+    let next = current === "light" ? "dark" : "light";
+    animateTheme(next);
+    applyTheme(next);
+}
+
+/* RENDER */
+function render(){
+    document.getElementById("name").innerText = user.name || "User";
+    document.getElementById("uid").innerText = user.id || "";
+
+    i_name.value = user.name || "";
+    i_email.value = user.email || "";
+    i_phone.value = user.phone || "";
+    i_dob.value = user.dob || "";
+    i_gender.value = user.gender || "";
+
+    let pic = localStorage.getItem("profilePic");
+
+    if(pic){
+        avatar.innerHTML = `<img src="${pic}">`;
+    }else{
+        avatar.innerText = (user.name || "U")[0].toUpperCase();
+    }
+
+    disableFields();
+}
+
+/* PHOTO */
+function upload(){
+    let input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = function(){
+        let file = input.files[0];
+        if(!file) return;
+
+        let reader = new FileReader();
+
+        reader.onload = function(e){
+            localStorage.setItem("profilePic", e.target.result);
+            render();
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+    input.click();
+}
+
+/* EDIT */
+function enableEdit(){
+    i_name.disabled=false;
+    i_email.disabled=false;
+    i_phone.disabled=false;
+    i_dob.disabled=false;
+    i_gender.disabled=false;
+
+    document.getElementById("editBtn").innerText="Save";
+    document.getElementById("editBtn").onclick=save;
+}
+
+function disableFields(){
+    i_name.disabled=true;
+    i_email.disabled=true;
+    i_phone.disabled=true;
+    i_dob.disabled=true;
+    i_gender.disabled=true;
+}
+
+/* SAVE */
+async function save(){
+    let payload={
+        name:i_name.value.trim(),
+        email:i_email.value.trim(),
+        phone:i_phone.value.trim(),
+        dob:i_dob.value,
+        gender:i_gender.value
+    };
+
+    if(!payload.name || !payload.email){
+        alert("Name and email required ❌");
+        return;
+    }
+
+    let res = await fetch(`http://localhost:3000/update-profile/${user.id}`,{
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":token
+        },
+        body:JSON.stringify(payload)
+    });
+
+    let data = await res.json();
+
+    if(data.success){
+        Object.assign(user,payload);
+        localStorage.setItem("user",JSON.stringify(user));
+        alert("Saved ✅");
+
+        document.getElementById("editBtn").innerText="Edit Profile";
+        document.getElementById("editBtn").onclick=enableEdit;
+
+        render();
+    }else{
+        alert("Save failed ❌");
+    }
+}
+
+/* ORDERS */
+function loadOrders(){
+    fetch(`http://localhost:3000/orders/${user.id}`,{
+        headers:{ "Authorization":token }
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        if(!data || data.length===0){
+            document.getElementById("orders").innerHTML="No orders found.";
+            return;
+        }
+
+        let html="";
+
+        data.forEach(o=>{
+            let items=[];
+            try{
+                items=JSON.parse(o.items||"[]");
+            }catch(e){
+                items=[];
+            }
+
+            html+=`
+            <div style="border-bottom:1px solid #eee;padding:12px 0;">
+                <b>Order #${o.id}</b> - ₹${o.total_price}<br>
+                <span style="color:green;font-weight:bold;">Status: ${o.status || "Placed"}</span>
+                <ul>${items.map(i=>`<li>${i.name} x${i.qty}</li>`).join("")}</ul>
+                <a href="tracking.html?order=${o.id}" style="color:#ff4d4d;font-weight:bold;">
+                    🚴 Track Order
+                </a>
+            </div>`;
+        });
+
+        document.getElementById("orders").innerHTML=html;
+    })
+    .catch(()=>{
+        document.getElementById("orders").innerHTML="Order history error ❌";
+    });
+}
+
+/* NOTIFICATIONS */
+function toggleNotifications(){
+    let box=document.getElementById("notifBox");
+    box.style.display = box.style.display==="block" ? "none" : "block";
+    loadNotifications();
+}
+
+function loadNotifications(){
+    fetch(`http://localhost:3000/notifications/${user.id}`,{
+        headers:{ "Authorization":token }
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        let count=document.getElementById("notifCount");
+        let list=document.getElementById("notifList");
+
+        if(!data || data.length===0){
+            count.innerText="0";
+            list.innerHTML="No notifications";
+            return;
+        }
+
+        count.innerText=data.length;
+
+        list.innerHTML=data.map(n=>`
+            <div style="border-bottom:1px solid #eee;padding:10px 0;">
+                <b>Order #${n.id}</b><br>
+                Status: <span style="color:green;font-weight:bold;">${n.status}</span><br>
+                ₹${n.total_price}
+            </div>
+        `).join("");
+    })
+    .catch(()=>{
+        document.getElementById("notifList").innerHTML="Notification error ❌";
+    });
+}
+
+/* NAV */
+function goHome(){location.href="index.html";}
+function goTracking(){location.href="tracking.html";}
+function logout(){
+    localStorage.clear();
+    location.href="login.html";
+}
+
+/* INIT */
+applyTheme(localStorage.getItem("theme") || "light");
+render();
+loadOrders();
+loadNotifications();
+setInterval(loadNotifications,10000);
+</script>
+
+</body>
+</html>

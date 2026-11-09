@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNACCY - Order Food Online</title>
+
+<link rel="stylesheet" href="CSS/style.css">
+<link rel="stylesheet" href="CSS/theme.css">
+<link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Poppins,Arial,sans-serif;
+    background:linear-gradient(135deg,#fff7f0,#ffffff,#ffe5dc);
+    color:#222;
+}
+
+/* HEADER */
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    padding:16px 42px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:24px;
+    background:rgba(255,255,255,.76);
+    backdrop-filter:blur(20px);
+    box-shadow:0 14px 40px rgba(0,0,0,.08);
+    border-bottom:1px solid rgba(255,255,255,.45);
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.logo-img{
+    width:115px;
+    filter:drop-shadow(0 8px 14px rgba(255,82,0,.25));
+}
+
+.location-label{
+    font-size:12px;
+    color:#777;
+}
+
+.location-select{
+    border:none;
+    background:transparent;
+    font-weight:800;
+    color:#ff5200;
+    outline:none;
+}
+
+.search-box input{
+    width:420px;
+    padding:14px 20px;
+    border-radius:999px;
+    border:1px solid rgba(255,82,0,.15);
+    background:rgba(255,255,255,.9);
+    box-shadow:0 8px 24px rgba(0,0,0,.07);
+    outline:none;
+}
+
+.search-box{
+    position:relative;
+    flex:0 1 420px;
+    min-width:0;
+}
+
+.search-box input{
+    width:min(420px, 100%) !important;
+    padding:13px 54px 13px 18px !important;
+}
+
+.search-button svg{
+    display:block;
+    width:20px;
+    height:20px;
+}
+
+.search-button{
+    position:absolute;
+    top:50%;
+    right:7px;
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:translateY(-50%);
+    border:0;
+    border-radius:50%;
+    background:#ff5200;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.search-box input:focus{
+    border-color:#ff5200;
+    box-shadow:0 0 0 5px rgba(255,82,0,.14);
+}
+
+.nav-menu{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-menu a{
+    text-decoration:none;
+    color:#222;
+    font-weight:800;
+    transition:.3s;
+}
+
+.nav-menu a:hover{
+    color:#ff5200;
+    transform:translateY(-2px);
+}
+
+/* HERO */
+.banner{
+    margin:30px;
+    min-height:390px;
+    padding:24px;
+    border-radius:36px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(120deg,#ff5200,#ff9f1c,#ff1744),url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><defs><pattern id="food" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><text x="50" y="50" font-size="60" text-anchor="middle" dominant-baseline="middle">🍕</text></pattern></defs><rect width="1200" height="400" fill="url(%23food)" opacity="0.08"/></svg>');
+    background-size:300% 300%, cover;
+    animation:heroMove 7s ease infinite;
+    box-shadow:0 25px 70px rgba(255,82,0,.35);
+}
+
+.banner::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at 15% 20%,rgba(255,255,255,.38),transparent 24%),
+    radial-gradient(circle at 85% 10%,rgba(255,255,255,.22),transparent 22%),
+    radial-gradient(circle at 50% 90%,rgba(255,255,255,.2),transparent 28%);
+    z-index:0;
+}
+
+.banner::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:url('img/india-landmarks.png') center bottom / 100% auto no-repeat;
+    opacity:.28;
+    pointer-events:none;
+}
+
+.banner-content{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    color:white;
+    max-width:min(800px, 100%);
+    padding:20px;
+    animation:fadeUp .9s ease;
+}
+
+.banner-content h1{
+    font-size:clamp(34px, 4.2vw, 52px);
+    line-height:1.1;
+    margin:0 0 14px;
+    font-weight:900;
+    text-shadow:0 10px 30px rgba(0,0,0,.22);
+}
+
+.banner-content p{
+    font-size:20px;
+    margin-bottom:26px;
+    text-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+.hero-btn{
+    padding:15px 32px;
+    border:none;
+    border-radius:999px;
+    background:white;
+    color:#ff5200;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 14px 30px rgba(0,0,0,.22);
+    transition:.3s;
+}
+
+.hero-btn:hover{
+    transform:translateY(-5px) scale(1.04);
+}
+
+/* AI BOX */
+.ai-box{
+    margin:30px auto;
+    max-width:1100px;
+    padding:26px;
+    border-radius:28px;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.45);
+    box-shadow:0 18px 45px rgba(0,0,0,.09);
+}
+
+.ai-row{
+    display:flex;
+    gap:12px;
+    margin-top:16px;
+}
+
+.ai-row input{
+    flex:1;
+    padding:14px;
+    border-radius:14px;
+    border:1px solid #ddd;
+    outline:none;
+}
+
+.ai-row button{
+    padding:14px 24px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#ff5200,#ff1744);
+    color:white;
+    font-weight:900;
+    cursor:pointer;
+}
+
+#aiResult{
+    margin-top:14px;
+    font-weight:900;
+    color:#ff5200;
+}
+
+/* CATEGORY */
+.mind-section,
+.restaurants,
+.cities{
+    margin:30px;
+    padding:32px;
+    border-radius:28px;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.45);
+    box-shadow:0 18px 45px rgba(0,0,0,.09);
+}
+
+.mind-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.arrows button{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:#fff1e8;
+    color:#ff5200;
+    font-size:20px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.arrows button:hover{
+    background:#ff5200;
+    color:white;
+}
+
+.slider-container{
+    overflow:hidden;
+    margin-top:24px;
+}
+
+.slider{
+    display:flex;
+    gap:24px;
+    transition:.45s ease;
+}
+
+.item{
+    min-width:130px;
+    text-align:center;
+    cursor:pointer;
+    transition:.35s;
+}
+
+.item:hover{
+    transform:translateY(-8px) scale(1.06);
+}
+
+.item img{
+    width:105px;
+    height:105px;
+    border-radius:50%;
+    object-fit:cover;
+    box-shadow:0 12px 28px rgba(0,0,0,.15);
+}
+
+.item p{
+    margin-top:10px;
+    font-weight:800;
+}
+
+/* RESTAURANTS */
+.restaurants h2,
+.cities h2{
+    text-align:center;
+    font-size:30px;
+    font-weight:900;
+    margin-bottom:28px;
+}
+
+.restaurant-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:26px;
+}
+
+.card{
+    background:rgba(255,255,255,.86);
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 18px 45px rgba(0,0,0,.10);
+    border:1px solid rgba(255,255,255,.45);
+    transition:.35s;
+}
+
+.card:hover{
+    transform:translateY(-12px) scale(1.025);
+    box-shadow:0 28px 70px rgba(0,0,0,.18);
+}
+
+.card img{
+    width:100%;
+    height:175px;
+    object-fit:cover;
+    transition:.45s;
+}
+
+.card:hover img{
+    transform:scale(1.12);
+}
+
+.card h3,
+.card p,
+.card span{
+    padding:0 16px;
+}
+
+.card h3{
+    margin-top:14px;
+}
+
+.card h3 a{
+    text-decoration:none;
+    color:#222;
+}
+
+.card p{
+    color:#777;
+}
+
+.card span{
+    display:block;
+    padding-bottom:18px;
+    font-weight:700;
+}
+
+/* CITIES */
+.city-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+}
+
+.city-card{
+    padding:22px;
+    border-radius:22px;
+    text-align:center;
+    font-weight:900;
+    background:rgba(255,255,255,.82);
+    box-shadow:0 14px 35px rgba(0,0,0,.10);
+    cursor:pointer;
+    transition:.35s;
+    background-size:cover;
+    background-position:center;
+    color:white;
+    text-shadow:0 2px 6px rgba(0,0,0,.4);
+    min-height:120px;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    align-items:center;
+    justify-content:center;
+}
+
+.city-card small{
+    font-size:12px;
+    font-weight:700;
+}
+
+.city-card:hover{
+    transform:translateY(-10px) scale(1.04);
+    box-shadow:0 25px 50px rgba(0,0,0,.25);
+}
+
+/* NOTIFICATION */
+.notif-box{
+    display:none;
+    position:fixed;
+    top:90px;
+    right:30px;
+    width:330px;
+    padding:18px;
+    border-radius:22px;
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(18px);
+    box-shadow:0 20px 55px rgba(0,0,0,.2);
+    z-index:9999;
+}
+
+.notif-item{
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+
+.notif-item span{
+    color:green;
+    font-weight:900;
+}
+
+/* USER */
+.user-box{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    position:relative;
+}
+
+.user-box img{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    border:2px solid #ff5200;
+}
+
+.user-dropdown{
+    display:none;
+    position:absolute;
+    top:46px;
+    right:0;
+    min-width:135px;
+    padding:10px;
+    border-radius:14px;
+    background:white;
+    color:black;
+    box-shadow:0 12px 30px rgba(0,0,0,.18);
+    z-index:10000;
+}
+
+.user-dropdown p{
+    margin:0;
+    padding:9px;
+    border-radius:10px;
+}
+
+.user-dropdown p:hover{
+    background:#fff1e8;
+}
+
+/* FOOTER */
+.footer{
+    margin-top:70px;
+    background:linear-gradient(135deg,#070707,#171717);
+    color:white;
+    overflow:hidden;
+}
+
+.footer-wave svg{
+    display:block;
+    width:100%;
+}
+
+.footer-main{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:48px;
+    flex-wrap:wrap;
+    padding:45px 55px;
+}
+
+.footer-brand{
+    flex:0 1 270px;
+}
+
+.footer-brand img{
+    width:130px;
+}
+
+.footer-brand h2{
+    font-size:30px;
+    margin:8px 0;
+}
+
+.footer-brand p{
+    color:#bbb;
+    margin:10px 0 0;
+    line-height:1.6;
+    max-width:250px;
+}
+
+.footer-grid{
+    display:flex;
+    flex:1 1 520px;
+    justify-content:flex-end;
+    gap:clamp(28px, 5vw, 72px);
+    flex-wrap:wrap;
+}
+
+.footer-grid > div{
+    min-width:140px;
+}
+
+.footer-grid h4{
+    margin-bottom:12px;
+}
+
+.footer-grid a,
+.footer-grid p{
+    display:block;
+    color:#bbb;
+    margin:8px 0;
+    text-decoration:none;
+}
+
+.footer-grid a:hover{
+    color:#ff5200;
+}
+
+.footer-contact p{
+    line-height:1.6;
+    overflow-wrap:anywhere;
+}
+
+.social-icons{
+    display:flex;
+    gap:12px;
+    margin-top:12px;
+}
+
+.social-icons a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:rgba(255,255,255,.1);
+    color:white;
+    text-decoration:none;
+    font-size:20px;
+    transition:.3s;
+}
+
+.social-icons a:hover{
+    background:#ff5200;
+    transform:translateY(-3px);
+}
+
+.footer-bottom{
+    text-align:center;
+    padding:16px;
+    color:#aaa;
+    border-top:1px solid #333;
+}
+
+/* DARK */
+body.dark{
+    background:linear-gradient(135deg,#060606,#171717,#260d0d)!important;
+    color:#fff!important;
+}
+
+body.dark .header,
+body.dark .mind-section,
+body.dark .restaurants,
+body.dark .cities,
+body.dark .ai-box,
+body.dark .card,
+body.dark .notif-box{
+    background:rgba(22,22,22,.86)!important;
+    color:#fff!important;
+    border:1px solid rgba(255,255,255,.08)!important;
+}
+
+body.dark .city-card{
+    background-color:rgba(22,22,22,.86)!important;
+    color:#fff!important;
+    border:1px solid rgba(255,255,255,.08)!important;
+}
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark p,
+body.dark span,
+body.dark a,
+body.dark div{
+    color:#fff!important;
+}
+
+body.dark input,
+body.dark select{
+    background:#1f1f1f!important;
+    color:#fff!important;
+    border:1px solid #555!important;
+}
+
+body.dark .card p,
+body.dark .footer-grid p,
+body.dark .footer-grid a{
+    color:#ddd!important;
+}
+
+body.dark .user-dropdown{
+    background:#222;
+    color:#fff;
+}
+
+body.dark .user-dropdown p{
+    color:#fff;
+}
+
+body.dark .user-dropdown p:hover{
+    background:#444;
+}
+
+body.dark .ai-box h2,
+body.dark .ai-box p,
+body.dark .mind-section h2,
+body.dark .mind-section p,
+body.dark .restaurants h2,
+body.dark .cities h2{
+    color:#fff!important;
+}
+
+@keyframes heroMove{
+    0%{background-position:0%}
+    50%{background-position:100%}
+    100%{background-position:0%}
+}
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(35px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:900px){
+    .header{
+        flex-direction:column;
+        padding:18px;
+    }
+
+    .search-box{
+        width:min(420px, 80vw);
+        flex-basis:auto;
+    }
+
+    .search-box input{
+        width:100% !important;
+    }
+
+    .banner-content h1{
+        font-size:34px;
+    }
+
+    .banner::after{
+        background-size:auto 78%;
+    }
+
+    .ai-row{
+        flex-direction:column;
+    }
+}
+
+@media(max-width:600px){
+    .footer-main{
+        padding:35px 24px;
+        gap:30px;
+    }
+
+    .footer-grid{
+        flex-basis:100%;
+        justify-content:flex-start;
+        gap:24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <img src="img/logo22.png" class="logo-img">
+
+        <div class="location-box">
+            <span class="location-label">Setup your precise location</span>
+            <select class="location-select">
+                <option>Ahmedabad</option>
+                <option>Bangalore</option>
+                <option>Hyderabad</option>
+                <option>Mumbai</option>
+                <option>Delhi</option>
+                <option>Kolkata</option>
+                <option>Pune</option>
+                <option>Chennai</option>
+                <option>Jaipur</option>
+                <option>All India</option>
+            </select>
+        </div>
+    </div>
+
+    <form class="search-box" role="search">
+        <input type="search" placeholder="Search for restaurant and food" aria-label="Search restaurants and food">
+        <button class="search-button" type="submit" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                <path d="m16 16 4 4"></path>
+            </svg>
+        </button>
+    </form>
+
+    <nav class="nav-menu">
+        <a href="index.html">🏠 Home</a>
+        <a href="offer.html">✨ Offers</a>
+        <a href="help.html">☎ Help</a>
+        <a href="cart.html">📦 Cart</a>
+        <a href="signup.html" class="signin">💻 Sign Up</a>
+        <a href="javascript:void(0)" onclick="toggleNotifications()">🔔 <span id="notifCount">0</span></a>
+    </nav>
+</header>
+
+<div id="notifBox" class="notif-box">
+    <h3>🔔 Notifications</h3>
+    <div id="notifList">Loading...</div>
+</div>
+
+<section class="banner">
+    <div class="banner-content">
+        <h1>Order Delicious Food Online</h1>
+        <p>Fast delivery from your favorite restaurants with SNACCY</p>
+        <button class="hero-btn" onclick="document.querySelector('.restaurants').scrollIntoView({behavior:'smooth'})">
+            Explore Restaurants
+        </button>
+    </div>
+</section>
+
+<section class="ai-box">
+    <h2>🤖 AI Food Recommendation</h2>
+    <p>Tell us your mood and SNACCY will suggest food for you.</p>
+
+    <div class="ai-row">
+        <input id="moodInput" placeholder="Example: hungry, spicy, sweet, light, coffee">
+        <button onclick="getSuggestion()">Suggest Food</button>
+    </div>
+
+    <div id="aiResult"></div>
+</section>
+
+<section class="mind-section">
+    <div class="mind-header">
+        <h2>What's on your mind?</h2>
+        <div class="arrows">
+            <button onclick="slideLeft()">❮</button>
+            <button onclick="slideRight()">❯</button>
+        </div>
+    </div>
+
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <div class="item"><img src="img/thali.avif"><p>Homely Food</p></div>
+            <div class="item"><img src="img/cake.avif"><p>Cake</p></div>
+            <div class="item"><img src="img/samosa.avif"><p>Samosa</p></div>
+            <div class="item"><img src="img/pizza.avif"><p>Pizza</p></div>
+            <div class="item"><img src="img/bur.avif"><p>Burger</p></div>
+            <div class="item"><img src="img/idli.avif"><p>Idli</p></div>
+            <div class="item"><img src="img/juice.avif"><p>Juice</p></div>
+            <div class="item"><img src="img/dosa.avif"><p>Dosa</p></div>
+            <div class="item"><img src="img/momo.avif"><p>Momos</p></div>
+            <div class="item"><img src="img/noodle.avif"><p>Noodles</p></div>
+            <div class="item"><img src="img/pasta.avif"><p>Pasta</p></div>
+            <div class="item"><img src="img/salad.avif"><p>Salad</p></div>
+            <div class="item"><img src="img/roll.avif"><p>Roll</p></div>
+            <div class="item"><img src="img/shaw.avif"><p>Shawarma</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="restaurants" id="restaurants">
+    <h2>Restaurants with Online Delivery</h2>
+
+    <div class="restaurant-container">
+        <div class="card" data-search="chicken bucket zinger burger popcorn chicken hot wings french fries fried chicken wings"><a href="kfcmanu.html"><img src="img/kfc.webp" alt="KFC restaurant"></a><h3><a href="kfcmanu.html">KFC</a></h3><p>Fried Chicken, Burger</p><span>⭐ 4.4 • 30 mins</span></div>
+        <div class="card" data-search="margherita veggie supreme paneer pizza chicken pizza farmhouse pepperoni feast tandoori paneer cheese burst"><a href="pizzahutmanu.html"><img src="img/pizz hunt.jpeg" alt="Pizza Hut restaurant"></a><h3><a href="pizzahutmanu.html">Pizza Hut</a></h3><p>Pizza, Fast Food</p><span>⭐ 4.2 • 25 mins</span></div>
+        <div class="card" data-search="margherita farmhouse peppy paneer chicken dominator garlic bread choco lava cake pizza"><a href="domimanu.html"><img src="img/dominoss.jpg" alt="Domino's restaurant"></a><h3><a href="domimanu.html">Domino's</a></h3><p>Pizza, Italian</p><span>⭐ 4.2 • 30 mins</span></div>
+        <div class="card" data-search="chicken dum mutton biryani veg biryani paneer biryani"><a href="birymanu.html"><img src="img/bir.webp" alt="Biryani House restaurant"></a><h3><a href="birymanu.html">Biryani House</a></h3><p>Biryani</p><span>⭐ 4.4 • 25 mins</span></div>
+        <div class="card" data-search="whopper burger chicken burger veg burger double cheese burger french fries"><a href="king.html"><img src="img/king.webp" alt="Burger King restaurant"></a><h3><a href="king.html">Burger King</a></h3><p>Burger, Drink</p><span>⭐ 4.4 • 35 mins</span></div>
+        <div class="card" data-search="margherita farmhouse pepperoni pizza veggie supreme chicken tandoori mexican green wave paneer tikka"><a href="lapimanu.html"><img src="img/lapi.jpeg" alt="La Pino'z Pizza restaurant"></a><h3><a href="lapimanu.html">La Pino'z Pizza</a></h3><p>Pizza, Brownie</p><span>⭐ 4.5 • 35 mins</span></div>
+        <div class="card" data-search="chocolate cake black forest cake vanilla cake dessert"><a href="CAKEMANU.HTML"><img src="img/cakes.webp" alt="Live Cake restaurant"></a><h3><a href="CAKEMANU.HTML">Live Cake</a></h3><p>Cakes, Brownie</p><span>⭐ 4.7 • 30 mins</span></div>
+        <div class="card" data-search="coffee cappuccino latte mocha cold coffee blueberry muffin caramel macchiato americano frappuccino"><a href="star.html"><img src="img/star.webp" alt="Starbucks restaurant"></a><h3><a href="star.html">Starbucks</a></h3><p>Coffee, Drink</p><span>⭐ 4.5 • 20 mins</span></div>
+    </div>
+</section>
+
+<section class="cities">
+    <h2>🚀 Cities with Food Delivery</h2>
+    <div class="city-container" id="cityContainer">
+        <div class="city-card" style="background-image:linear-gradient(135deg,rgba(0,0,0,.42),rgba(0,0,0,.18)),url('img/cities/ahmedabad.webp');"><strong>Ahmedabad</strong><small>Sabarmati Riverfront</small></div>
+        <div class="city-card" style="background-image:linear-gradient(135deg,rgba(0,0,0,.42),rgba(0,0,0,.18)),url('img/cities/bangalore.webp');"><strong>Bangalore</strong><small>Vidhana Soudha</small></div>
+        <div class="city-card" style="background-image:linear-gradient(135deg,rgba(0,0,0,.42),rgba(0,0,0,.18)),url('img/cities/mumbai.webp');"><strong>Mumbai</strong><small>Gateway of India</small></div>
+        <div class="city-card" style="background-image:linear-gradient(135deg,rgba(0,0,0,.42),rgba(0,0,0,.18)),url('img/cities/delhi.webp');"><strong>Delhi</strong><small>India Gate</small></div>
+        <div class="city-card" style="background-image:linear-gradient(135deg,rgba(0,0,0,.42),rgba(0,0,0,.18)),url('img/cities/kolkata.webp');"><strong>Kolkata</strong><small>Victoria Memorial</small></div>
+        <div class="city-card" style="background-image:linear-gradient(135deg,rgba(0,0,0,.42),rgba(0,0,0,.18)),url('img/cities/pune.webp');"><strong>Pune</strong><small>Shaniwar Wada</small></div>
+        <div class="city-card" style="background-image:linear-gradient(135deg,rgba(0,0,0,.42),rgba(0,0,0,.18)),url('img/cities/chennai.webp');"><strong>Chennai</strong><small>Marina Beach</small></div>
+        <div class="city-card" style="background-image:linear-gradient(135deg,rgba(0,0,0,.42),rgba(0,0,0,.18)),url('img/cities/jaipur.webp');"><strong>Jaipur</strong><small>Hawa Mahal</small></div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-wave">
+        <svg viewBox="0 0 1440 180">
+            <path fill="#ff5200" d="M0,96L80,101.3C160,107,320,117,480,101.3C640,85,800,43,960,48C1120,53,1280,107,1360,133.3L1440,160V180H0Z"></path>
+        </svg>
+    </div>
+
+    <div class="footer-main">
+        <div class="footer-brand">
+            <img src="img/logo22.png">
+            <h2>SNACCY</h2>
+            <p>India's fastest food delivery platform 🚀</p>
+            <div class="social-icons">
+                <a href="https://github.com/Dhavalrathod1537/Dhavalrathod1537" target="_blank" rel="noopener noreferrer" aria-label="Connect with Dhaval Rathod on GitHub" title="Connect on GitHub">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+                <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.117.63c-.794.297-1.473.702-2.082 1.31-.609.609-1.013 1.288-1.31 2.082-.297.788-.5 1.658-.56 2.935C.015 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.263 2.148.56 2.935.297.794.702 1.473 1.31 2.082.609.609 1.288 1.013 2.082 1.31.788.297 1.655.5 2.935.56C8.333 23.985 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.263 2.935-.56.794-.297 1.473-.702 2.082-1.31.609-.609 1.013-1.288 1.31-2.082.297-.788.5-1.655.56-2.935.057-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.263-2.148-.56-2.935-.297-.794-.702-1.473-1.31-2.082-.609-.609-1.288-1.013-2.082-1.31-.788-.297-1.655-.5-2.935-.56C15.667.015 15.26 0 12 0zm0 2.16c3.203 0 3.585.009 4.849.070 1.17.054 1.805.244 2.227.408.56.217.96.477 1.382.896.419.42.679.822.896 1.381.164.422.354 1.057.408 2.227.061 1.264.07 1.646.07 4.849s-.009 3.585-.07 4.849c-.054 1.17-.244 1.805-.408 2.227-.217.56-.477.96-.896 1.382-.42.419-.822.679-1.381.896-.422.164-1.057.354-2.227.408-1.264.061-1.646.07-4.849.07s-3.585-.009-4.849-.07c-1.17-.054-1.805-.244-2.227-.408-.56-.217-.96-.477-1.382-.896-.419-.42-.679-.822-.896-1.381-.164-.422-.354-1.057-.408-2.227-.061-1.264-.07-1.646-.07-4.849s.009-3.585.07-4.849c.054-1.17.244-1.805.408-2.227.217-.56.477-.96.896-1.382.42-.419.822-.679 1.381-.896.422-.164 1.057-.354 2.227-.408 1.264-.061 1.646-.07 4.849-.07zm0 3.68c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-grid">
+            <div>
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Team</a>
+                <a href="#">SNACCY Food</a>
+            </div>
+
+            <div>
+                <h4>Support</h4>
+                <a href="help.html">Help Center</a>
+                <a href="#">Partner With Us</a>
+                <a href="#">Ride With Us</a>
+                <a href="#">Terms</a>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>📧 support@snaccy.example</p>
+                <p>📞 +91 94849 00000 </p>
+                <p>📍 India</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 SNACCY • Built with ❤️ in India
+    </div>
+</footer>
+
+<script>
+let scrollPosition = 0;
+
+function slideRight(){
+    const slider = document.getElementById("slider");
+    const maxScroll = slider.scrollWidth - slider.clientWidth;
+    scrollPosition += 300;
+    if(scrollPosition > maxScroll) scrollPosition = maxScroll;
+    slider.style.transform = `translateX(-${scrollPosition}px)`;
+}
+
+function slideLeft(){
+    const slider = document.getElementById("slider");
+    scrollPosition -= 300;
+    if(scrollPosition < 0) scrollPosition = 0;
+    slider.style.transform = `translateX(-${scrollPosition}px)`;
+}
+
+function getSuggestion(){
+    const mood = document.getElementById("moodInput").value.trim().toLowerCase();
+    const result = document.getElementById("aiResult");
+    const suggestions = [
+        {terms:["spicy","hot"], text:"🌶 Try a spicy biryani from Biryani House.", search:"biryani"},
+        {terms:["sweet","dessert","cake"], text:"🍰 Try Live Cake's desserts and brownies.", search:"cake"},
+        {terms:["pizza","cheese"], text:"🍕 Pizza Hut, Domino's, and La Pino'z have pizzas ready to order.", search:"pizza"},
+        {terms:["coffee","caffeine"], text:"☕ Find a coffee or latte at Starbucks.", search:"coffee"},
+        {terms:["light","healthy","salad"], text:"🥗 Try a veggie pizza from Pizza Hut or La Pino'z.", search:"pizza"},
+        {terms:["hungry","chicken","burger"], text:"🔥 KFC and Burger King have filling meals ready to order.", search:"burger"}
+    ];
+    const suggestion = suggestions.find(option => option.terms.some(term => mood.includes(term)));
+
+    if(!mood){
+        result.textContent = "Tell us what you're craving to get a food suggestion.";
+        return;
+    }
+
+    const selected = suggestion || {text:"🍽 Explore our restaurants and choose something delicious.", search:""};
+    result.innerHTML = `${selected.text} <a href="#restaurants" data-search="${selected.search}">See available options</a>`;
+    result.querySelector("a").addEventListener("click", event => {
+        event.preventDefault();
+        searchInput.value = selected.search;
+        filterRestaurants(selected.search);
+        document.querySelector(".restaurants").scrollIntoView({behavior:"smooth"});
+    });
+}
+
+document.getElementById("moodInput").addEventListener("keydown", event => {
+    if(event.key === "Enter") getSuggestion();
+});
+
+/* SEARCH */
+const searchInput = document.querySelector(".search-box input");
+const searchForm = document.querySelector(".search-box");
+const restaurantContainer = document.querySelector(".restaurant-container");
+const restaurantCards = document.querySelectorAll(".card");
+
+const notFoundMessage = document.createElement("p");
+notFoundMessage.id = "not-found-message";
+notFoundMessage.setAttribute("role", "status");
+notFoundMessage.style.color = "red";
+notFoundMessage.style.fontWeight = "bold";
+notFoundMessage.style.marginTop = "20px";
+notFoundMessage.textContent = "No matching restaurant or food is currently available.";
+
+function filterRestaurants(value){
+    const query = value.toLowerCase().trim();
+    let found = false;
+
+    restaurantCards.forEach(card => {
+        const searchableText = `${card.textContent} ${card.dataset.search || ""}`.toLowerCase();
+        const matches = !query || searchableText.includes(query);
+        card.style.display = matches ? "" : "none";
+        found = found || matches;
+    });
+
+    if(!found && restaurantContainer){
+        restaurantContainer.after(notFoundMessage);
+    }else{
+        notFoundMessage.remove();
+    }
+}
+
+if(searchInput){
+    searchInput.addEventListener("input", () => filterRestaurants(searchInput.value));
+}
+
+if(searchForm){
+    searchForm.addEventListener("submit", event => {
+        event.preventDefault();
+        filterRestaurants(searchInput.value);
+        if(searchInput.value.trim()){
+            document.querySelector(".restaurants").scrollIntoView({behavior:"smooth"});
+        }
+    });
+}
+
+/* USER */
+document.addEventListener("DOMContentLoaded", ()=>{
+    const user = JSON.parse(localStorage.getItem("user"));
+    const signBtn = document.querySelector(".signin");
+
+    if(user && signBtn){
+        signBtn.innerHTML = `
+        <div id="userBox" class="user-box">
+            <img src="img/user.png">
+            <span>${user.name || user.email}</span>
+            <div id="dropdown" class="user-dropdown">
+                <p onclick="goProfile()">Profile</p>
+                <p onclick="logout()">Logout</p>
+            </div>
+        </div>`;
+
+        signBtn.href = "javascript:void(0)";
+
+        const userBox = document.getElementById("userBox");
+        const dropdown = document.getElementById("dropdown");
+
+        userBox.addEventListener("click", e=>{
+            e.stopPropagation();
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", ()=>{
+            dropdown.style.display = "none";
+        });
+    }
+
+    loadNotifications();
+});
+
+function goProfile(){
+    location.href = "profile.html";
+}
+
+function logout(){
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    alert("Logged out ✅");
+    location.reload();
+}
+
+/* NOTIFICATION */
+function toggleNotifications(){
+    const box = document.getElementById("notifBox");
+    box.style.display = box.style.display === "block" ? "none" : "block";
+    loadNotifications();
+}
+
+function loadNotifications(){
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+
+    if(!user || !token){
+        document.getElementById("notifList").innerHTML = "Login to see notifications";
+        document.getElementById("notifCount").innerText = "0";
+        return;
+    }
+
+    fetch(`http://localhost:3000/notifications/${user.id}`, {
+        headers:{ "Authorization": token }
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        const list = document.getElementById("notifList");
+        const count = document.getElementById("notifCount");
+
+        if(!data || data.length === 0){
+            list.innerHTML = "No notifications";
+            count.innerText = "0";
+            return;
+        }
+
+        count.innerText = data.length;
+
+        list.innerHTML = data.map(n=>`
+            <div class="notif-item">
+                <b>Order #${n.id}</b><br>
+                Status: <span>${n.status}</span><br>
+                ₹${n.total_price}
+            </div>
+        `).join("");
+    })
+    .catch(()=>{
+        document.getElementById("notifList").innerHTML = "Notification error ❌";
+    });
+}
+
+setInterval(loadNotifications,10000);
+</script>
+
+<script src="theme.js"></script>
+</body>
+</html>

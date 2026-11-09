@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNACCY - Offers & Deals</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="CSS/theme.css">
+<style>
+body{
+    margin:0;
+    font-family:'Roboto',sans-serif;
+    background:#f7f7f7;
+    color:#333;
+}
+.navbar{
+    background:#ff5200;
+    color:white;
+    padding:15px 50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+}
+.navbar .logo{font-size:24px;font-weight:700;}
+.navbar .nav-links a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+    font-weight:500;
+}
+.navbar .nav-links a:hover{opacity:0.8;}
+
+/* PAGE HEADER */
+.page-header{
+    text-align:center;
+    padding:40px 20px 20px;
+}
+.page-header h1{font-size:32px;margin:0 0 10px;color:#ff5200;}
+.page-header p{font-size:16px;color:#666;}
+
+/* OFFERS GRID */
+.offers-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    max-width:1200px;
+    margin:30px auto;
+    padding:0 20px;
+}
+.offer-card{
+    background:white;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+    overflow:hidden;
+    position:relative;
+    transition:transform 0.3s, box-shadow 0.3s;
+}
+.offer-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+.offer-card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+.offer-content{
+    padding:15px;
+}
+.offer-content h3{
+    margin:0 0 10px;
+    font-size:20px;
+    color:#ff5200;
+}
+.offer-content p{
+    margin:0;
+    font-size:14px;
+    color:#555;
+}
+.discount-badge{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:#28a745;
+    color:white;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:8px;
+    font-size:14px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* RESPONSIVE BUTTON */
+.view-more-btn{
+    display:block;
+    width:200px;
+    margin:30px auto;
+    text-align:center;
+    padding:12px 0;
+    background:#ff5200;
+    color:white;
+    font-weight:600;
+    border-radius:8px;
+    cursor:pointer;
+    text-decoration:none;
+    transition:background 0.3s;
+}
+.view-more-btn:hover{background:#e64a00;}
+
+body.dark{
+    background:#101010!important;
+    color:#f5f5f5!important;
+}
+body.dark .page-header h1{
+    color:#ff8659!important;
+}
+body.dark .page-header p{
+    color:#d0d0d0!important;
+}
+body.dark .offer-card{
+    background:#202020!important;
+    color:#f5f5f5!important;
+    border:1px solid #383838;
+}
+body.dark .offer-content h3{
+    color:#ff8659!important;
+}
+body.dark .offer-content p{
+    color:#dedede!important;
+}
+</style>
+</head>
+<body>
+<script src="theme.js"></script>
+<div class="navbar">
+    <div class="logo">SNACCY</div>
+    <div class="nav-links">
+        <a href="index.html">🏠 Home</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="offer.html">💰 Offers</a>
+    </div>
+</div>
+
+<div class="page-header">
+    <h1>🔥 Current Offers & Deals</h1>
+    <p>Grab the best discounts on your favorite food items!</p>
+</div>
+
+<div class="offers-container" id="offersContainer">
+    <!-- Offers will be injected here by JS -->
+</div>
+
+<a href="#" class="view-more-btn" onclick="loadMoreOffers()">View More Offers</a>
+
+<script>
+// Sample offers array
+const offers=[
+    {title:"Flat 50% Off Pizza", desc:"Enjoy flat 50% discount on all Margherita and Veggie Supreme pizzas.", img:"img/marg.webp", discount:"50% OFF"},
+    {title:"Buy 1 Get 1 Free Burger", desc:"Buy any burger and get one absolutely free!", img:"img/bur.avif" , discount:"B1G1"},
+    {title:"₹100 Off on Biryani", desc:"Get ₹100 discount on all Biryani orders above ₹500.", img:"img/bir.webp", discount:"₹100 OFF"},
+    {title:"Dessert Fest", desc:"Get 30% off on all cakes and desserts this weekend.", img:"img/cake.avif", discount:"30% OFF"},
+    {title:"Combo Meal Offer", desc:"Buy a pizza + drink combo and save ₹80.", img:"img/chibucket.webp", discount:"Save ₹80"},
+    {title:"Free Delivery", desc:"Get free delivery on orders above ₹300.", img:"img/waffle.avif", discount:"FREE"},
+];
+
+function loadOffers(){
+    const container=document.getElementById("offersContainer");
+    container.innerHTML="";
+    offers.forEach(offer=>{
+        container.innerHTML+=`
+        <div class="offer-card">
+            <img src="${offer.img}" onerror="this.src='img/placeholder.png'">
+            <div class="discount-badge">${offer.discount}</div>
+            <div class="offer-content">
+                <h3>${offer.title}</h3>
+                <p>${offer.desc}</p>
+            </div>
+        </div>`;
+    });
+}
+
+// Optional: load more offers (for demo, just reloads same offers)
+function loadMoreOffers(){ loadOffers(); }
+
+loadOffers();
+</script>
+
+</body>
+</html>

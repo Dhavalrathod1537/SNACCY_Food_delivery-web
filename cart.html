@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SNACCY Checkout</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="CSS/theme.css">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Roboto,Arial,sans-serif;
+    background:linear-gradient(135deg,#fff1f1,#fff,#ffe1d6);
+    color:#222;
+}
+
+/* NAVBAR */
+.navbar{
+    background:rgba(15,12,12,.92);
+    padding:18px 60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:white;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    backdrop-filter:blur(18px);
+    box-shadow:0 12px 30px rgba(0,0,0,.18);
+}
+.logo-section{display:flex;align-items:center;gap:14px}
+.logo{height:58px;width:auto;filter:drop-shadow(0 8px 15px rgba(255,82,0,.35))}
+.brand{font-size:36px;font-weight:900;margin:0;letter-spacing:2px}
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    margin-left:28px;
+    font-size:18px;
+    font-weight:700;
+}
+.nav-links a:hover{color:#ff7b3d}
+
+/* LAYOUT */
+.checkout-container{
+    display:flex;
+    max-width:1250px;
+    margin:45px auto;
+    gap:32px;
+    flex-wrap:wrap;
+    padding:0 20px;
+}
+.checkout-left{flex:2;min-width:320px}
+.checkout-right{flex:1;min-width:300px}
+
+/* GLASS CARDS */
+.step,.cart-summary{
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    padding:24px;
+    margin-bottom:24px;
+    border-radius:22px;
+    box-shadow:0 18px 45px rgba(0,0,0,.10);
+    border:1px solid rgba(255,255,255,.45);
+    animation:fadeUp .6s ease both;
+}
+.step h3{
+    border-bottom:3px solid #ff1a1a;
+    padding-bottom:10px;
+    margin-top:0;
+    font-size:22px;
+}
+
+/* INPUT */
+input{
+    width:100%;
+    padding:13px 14px;
+    margin-bottom:12px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    outline:none;
+    background:rgba(255,255,255,.9);
+    transition:.3s;
+}
+input:focus{
+    border-color:#ff5200;
+    box-shadow:0 0 0 4px rgba(255,82,0,.14);
+}
+
+/* COUPON */
+.coupon-box{display:flex;gap:10px;margin-bottom:10px}
+.coupon-box input{flex:1}
+.coupon-box button,.payment-options button{
+    background:linear-gradient(135deg,#ff1a1a,#ff7b00);
+    color:white;
+    border:none;
+    padding:12px 16px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:800;
+    transition:.3s;
+}
+.coupon-box button:hover,.payment-options button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 28px rgba(255,82,0,.28);
+}
+#couponMsg{margin-top:6px;font-weight:700}
+.success{color:#16a34a!important}
+.error{color:#ef4444!important}
+.coupon-hint{display:block;margin:0 0 8px;color:#666;font-size:13px}
+
+/* PAYMENT */
+.payment-options button{
+    width:100%;
+    margin-bottom:12px;
+    background:rgba(255,82,0,.95);
+}
+
+/* CART */
+.cart-summary{
+    position:static;
+}
+.cart-item{
+    display:grid;
+    grid-template-columns:65px 1fr auto;
+    gap:12px;
+    align-items:center;
+    margin-bottom:14px;
+    padding:10px;
+    border-radius:14px;
+    background:rgba(255,255,255,.62);
+}
+.cart-item img{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:12px;
+}
+.qty button{
+    background:#ff1a1a;
+    color:white;
+    border:none;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    cursor:pointer;
+    font-weight:900;
+}
+.checkout-right{
+    position:sticky;
+    top:105px;
+    align-self:flex-start;
+}
+.place-order-btn{
+    width:100%;
+    padding:16px;
+    background:linear-gradient(135deg,#ff1a1a,#ff7b00);
+    color:white;
+    border:none;
+    border-radius:14px;
+    font-size:18px;
+    font-weight:900;
+    cursor:pointer;
+    margin-top:12px;
+    transition:.3s;
+    position:static;
+}
+.place-order-btn:hover:not(:disabled){
+    transform:translateY(-3px);
+    box-shadow:0 16px 35px rgba(255,82,0,.28);
+}
+.place-order-btn:disabled{background:gray;cursor:not-allowed}
+.upi-qr{text-align:center;margin-top:20px}
+.upi-qr img{
+    border-radius:18px;
+    padding:12px;
+    background:white;
+    box-shadow:0 14px 35px rgba(0,0,0,.14);
+}
+
+.scratch-card{display:none}
+
+/* SUCCESS SCREEN */
+.success-screen{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(45deg,#ff9800,#ff5722,#ff1744);
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    animation:zoomIn .6s ease;
+}
+.success-screen h1{font-size:54px;margin-bottom:10px}
+.success-screen p{font-size:22px}
+
+/* FIREWORK */
+.firework{
+    position:fixed;
+    left:50%;
+    top:50%;
+    width:7px;
+    height:7px;
+    background:yellow;
+    border-radius:50%;
+    animation:boom 1s ease-out forwards;
+    z-index:10000;
+}
+.hidden{display:none!important}
+
+@keyframes zoomIn{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes boom{
+    0%{opacity:1;transform:translate(0,0) scale(1)}
+    100%{opacity:0;transform:translate(var(--x),var(--y)) scale(0)}
+}
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(25px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* DARK MODE FINAL FIX */
+body.dark{
+    background:linear-gradient(135deg,#070707,#171717,#2a0f0f)!important;
+    color:#fff!important;
+}
+body.dark .navbar{
+    background:rgba(12,12,12,.92)!important;
+}
+body.dark .step,
+body.dark .cart-summary,
+body.dark .cart-item{
+    background:rgba(25,25,25,.86)!important;
+    color:#fff!important;
+    border:1px solid rgba(255,255,255,.08)!important;
+}
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark p,
+body.dark div,
+body.dark span,
+body.dark b,
+body.dark label{
+    color:#fff!important;
+}
+body.dark input{
+    background:#1f1f1f!important;
+    color:#fff!important;
+    border:1px solid #555!important;
+}
+body.dark input::placeholder{color:#aaa!important}
+body.dark .coupon-hint{color:#bbb!important}
+body.dark #couponMsg.success{color:#4ade80!important}
+body.dark #couponMsg.error{color:#f87171!important}
+body.dark .payment-options button{
+    color:#fff!important;
+}
+body.dark .upi-qr img{
+    background:#222;
+}
+
+@media(max-width:768px){
+    .navbar{padding:15px 20px;flex-direction:column;gap:12px}
+    .checkout-container{margin:25px auto}
+    .checkout-right{position:static}
+    .cart-summary{position:static}
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="logo-section">
+        <img src="img/logo22.png" class="logo">
+        <h1 class="brand">SNACCY</h1>
+    </div>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="help.html">Help & Support</a>
+    </div>
+</div>
+
+<div class="checkout-container">
+
+<div class="checkout-left">
+
+<div class="step">
+<h3>Account</h3>
+<input id="name" placeholder="Full Name *">
+<input id="phone" value="+91" maxlength="13" oninput="validatePhone()">
+<input id="email" placeholder="Email (Optional)">
+</div>
+
+<div class="step">
+<h3>Delivery Address</h3>
+<input id="address" placeholder="Address *">
+<input id="area" placeholder="Area *">
+<input id="pincode" placeholder="Pincode *" maxlength="6" oninput="updateCityFromPincode()">
+<input id="city" placeholder="City *">
+<input id="state" placeholder="State *">
+</div>
+
+<div class="step">
+<h3>Apply Coupon</h3>
+<div class="coupon-box">
+<input type="text" id="couponCode" placeholder="Enter Coupon Code">
+<button onclick="applyCoupon()">Apply</button>
+</div>
+<small class="coupon-hint">Try: SNACCY50, FOOD20, WELCOME30, or FLAT50</small>
+<p id="couponMsg"></p>
+</div>
+
+<div id="successScreen" class="success-screen hidden">
+    <h1>🎉 Order Placed!</h1>
+    <p>Preparing your delicious food...</p>
+</div>
+
+<div id="fireworks"></div>
+
+<div class="step">
+<h3>Payment Options</h3>
+<div class="payment-options">
+<button onclick="selectPayment('upi')">UPI (GPay / PhonePe / Paytm / BHIM)</button>
+<button onclick="selectPayment('cod')">Cash on Delivery</button>
+</div>
+</div>
+
+</div>
+
+<div class="checkout-right">
+<div class="cart-summary" id="cartSummary"></div>
+<button id="confirmBtn" class="place-order-btn" onclick="confirmPayment()">Confirm & Pay</button>
+<div class="upi-qr" id="qrBox"></div>
+</div>
+
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let paymentMethod = "";
+let appliedCoupon = "";
+
+window.onload = function(){
+    autoFillUser();
+    renderCart();
+};
+
+function autoFillUser(){
+    let user = JSON.parse(localStorage.getItem("user")) || {};
+    document.getElementById("name").value = user.name || "";
+    document.getElementById("phone").value = user.phone || "+91";
+    document.getElementById("email").value = user.email || "";
+}
+
+function validatePhone(){
+    let phone = document.getElementById("phone");
+    let val = phone.value.replace(/\D/g,"");
+    if(val.startsWith("91")) val = val.slice(2);
+    phone.value = "+91" + val.slice(0,10);
+}
+
+function updateCityFromPincode(){
+    let pincode = document.getElementById("pincode").value.replace(/\D/g,"").slice(0,6);
+    document.getElementById("pincode").value = pincode;
+
+    if(pincode.length !== 6) return;
+
+    const knownLocations = {
+        "385535":{city:"Deesa",state:"Gujarat",area:"Deesa"}
+    };
+    const knownLocation = knownLocations[pincode];
+    if(knownLocation){
+        document.getElementById("city").value = knownLocation.city;
+        document.getElementById("state").value = knownLocation.state;
+        if(!document.getElementById("area").value){
+            document.getElementById("area").value = knownLocation.area;
+        }
+        return;
+    }
+
+    fetch(`https://api.postalpincode.in/pincode/${pincode}`)
+    .then(res=>{
+        if(!res.ok) throw new Error(`Pincode lookup failed: ${res.status}`);
+        return res.json();
+    })
+    .then(data=>{
+        if(data[0] && data[0].Status === "Success" && data[0].PostOffice.length){
+            let post = data[0].PostOffice[0];
+            document.getElementById("city").value = post.Name || post.District || "";
+            document.getElementById("state").value = post.State || "";
+            if(!document.getElementById("area").value){
+                document.getElementById("area").value = post.Name || "";
+            }
+        }else{
+            throw new Error("Pincode was not found");
+        }
+    })
+    .catch(error=>console.error("Unable to look up this pincode.", error));
+}
+
+function renderCart(){
+    let box = document.getElementById("cartSummary");
+
+    if(cart.length === 0){
+        box.innerHTML = "<h3>Your Cart Empty :)</h3>";
+        document.getElementById("confirmBtn").disabled = true;
+        return;
+    }
+
+    document.getElementById("confirmBtn").disabled = false;
+
+    let subtotal = 0;
+    box.innerHTML = "<h3>Order Summary</h3>";
+
+    cart.forEach((item,i)=>{
+        let qty = Number(item.qty || 1);
+        let price = Number(item.price || 0);
+        subtotal += price * qty;
+
+        box.innerHTML += `
+        <div class="cart-item">
+            <img src="${item.img || item.image || "img/logo22.png"}">
+            <div><b>${item.name || "Item"}</b><br>₹${price}</div>
+            <div class="qty">
+                <button onclick="changeQty(${i},-1)">-</button>
+                ${qty}
+                <button onclick="changeQty(${i},1)">+</button>
+            </div>
+        </div>`;
+    });
+
+    let gst = subtotal * 0.05;
+    let discount = getDiscount();
+    let total = subtotal + gst - discount;
+
+    box.innerHTML += `
+        <hr>
+        <p>Subtotal ₹${subtotal.toFixed(2)}</p>
+        <p>GST ₹${gst.toFixed(2)}</p>
+        <p>Discount ₹${discount.toFixed(2)}</p>
+        <h3>Total ₹${total.toFixed(2)}</h3>
+    `;
+}
+
+function changeQty(i,val){
+    cart[i].qty = Number(cart[i].qty || 1) + val;
+    if(cart[i].qty <= 0) cart.splice(i,1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+    if(paymentMethod === "upi") generateQR();
+}
+
+const coupons = {
+    "SNACCY50":50,
+    "SNACCY100":100,
+    "FOOD20":20,
+    "WELCOME30":30,
+    "FREEDEL":40,
+    "SNACCY200":200,
+    "FLAT50":50
+};
+
+function getDiscount(){
+    const subtotal = cart.reduce((sum,item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
+    return appliedCoupon ? Math.min(coupons[appliedCoupon], subtotal * 1.05) : 0;
+}
+
+function applyCoupon(){
+    let code = document.getElementById("couponCode").value.trim().toUpperCase();
+    let msg = document.getElementById("couponMsg");
+
+    appliedCoupon = "";
+
+    if(!code || cart.length === 0){
+        msg.className = "error";
+        msg.textContent = !code ? "Please enter coupon code" : "Add items to your cart before applying a coupon.";
+    }else if(Object.prototype.hasOwnProperty.call(coupons, code)){
+        appliedCoupon = code;
+        msg.className = "success";
+        msg.textContent = "✅ Coupon applied! Discount: ₹" + getDiscount().toFixed(2);
+    }else{
+        msg.className = "error";
+        msg.textContent = "❌ Invalid or expired coupon code.";
+    }
+
+    renderCart();
+    if(paymentMethod === "upi") generateQR();
+}
+
+function selectPayment(method){
+    paymentMethod = method;
+
+    if(method === "upi"){
+        generateQR();
+    }else{
+        document.getElementById("qrBox").innerHTML = "<h3>Cash on Delivery Selected ✅</h3>";
+    }
+}
+
+function getTotal(){
+    let subtotal = 0;
+    cart.forEach(i=>subtotal += Number(i.price || 0) * Number(i.qty || 1));
+    let gst = subtotal * 0.05;
+    return subtotal + gst - getDiscount();
+}
+
+function generateQR(){
+    let box = document.getElementById("qrBox");
+    let total = getTotal();
+
+    let upi = "upi://pay?pa=9484849783@ptyes&pn=SNACCY&am=" + total.toFixed(2) + "&cu=INR";
+    let qr = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(upi);
+
+    box.innerHTML = `<h3>Scan & Pay</h3><img src="${qr}"><p>Amount ₹${total.toFixed(2)}</p>`;
+}
+
+function confirmPayment(){
+    let user = JSON.parse(localStorage.getItem("user"));
+    let token = localStorage.getItem("token");
+
+    if(!user){
+        alert("Login first ❌");
+        return;
+    }
+
+    if(cart.length === 0){
+        alert("Cart Empty");
+        return;
+    }
+
+    let name = document.getElementById("name").value.trim();
+    let phone = document.getElementById("phone").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let address = document.getElementById("address").value.trim();
+    let area = document.getElementById("area").value.trim();
+    let pincode = document.getElementById("pincode").value.trim();
+    let city = document.getElementById("city").value.trim();
+    let state = document.getElementById("state").value.trim();
+
+    if(!name || !phone || !address || !area || !pincode || !city || !state){
+        alert("Please fill all delivery details ❌");
+        return;
+    }
+
+    if(!/^\+91\d{10}$/.test(phone)){
+        alert("Enter valid phone number ❌");
+        return;
+    }
+
+    if(!/^\d{6}$/.test(pincode)){
+        alert("Enter valid pincode ❌");
+        return;
+    }
+
+    if(!paymentMethod){
+        alert("Please select payment method ❌");
+        return;
+    }
+
+    let total = getTotal();
+
+    let orderData = {
+        user_id: user.id,
+        items: cart,
+        total_price: total.toFixed(2),
+        name,
+        phone,
+        email,
+        address,
+        area,
+        pincode,
+        city,
+        state
+    };
+
+    fetch("http://localhost:3000/order", {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization": token || ""
+        },
+        body: JSON.stringify(orderData)
+    })
+    .then(res=>res.json())
+    .then(res=>{
+        if(res.success){
+            localStorage.setItem("orderData", JSON.stringify({
+                name, phone, email, address, area, pincode, city, state,
+                cart,
+                total,
+                payment: paymentMethod.toUpperCase()
+            }));
+
+            localStorage.removeItem("cart");
+            cart = [];
+            renderCart();
+            showSuccess();
+
+            setTimeout(()=>{
+                window.location.href = "invoice.html";
+            },3000);
+        }else{
+            alert(res.message || "Order Failed ❌");
+        }
+    })
+    .catch(err=>{
+        console.log(err);
+        alert("Server error ❌");
+    });
+}
+
+function showSuccess(){
+    document.getElementById("successScreen").classList.remove("hidden");
+    triggerFireworks();
+}
+
+function triggerFireworks(){
+    const box = document.getElementById("fireworks");
+
+    for(let i=0;i<80;i++){
+        let f = document.createElement("div");
+        f.classList.add("firework");
+        f.style.setProperty("--x",(Math.random()-0.5)*700+"px");
+        f.style.setProperty("--y",(Math.random()-0.5)*700+"px");
+        box.appendChild(f);
+        setTimeout(()=>f.remove(),1000);
+    }
+}
+</script>
+
+<script src="theme.js"></script>
+</body>
+</html>

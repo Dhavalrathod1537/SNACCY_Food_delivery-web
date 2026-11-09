@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizza Hut Menu</title>
+<style>
+body{font-family: Arial; margin:0; background:#f4f4f4;}
+.navbar{background:#d62300; color:white; padding:15px 40px; display:flex; justify-content:space-between; align-items:center;}
+.navbar .nav-buttons button{background:white; color:#d62300; border:none; padding:8px 18px; border-radius:8px; font-weight:bold; cursor:pointer; margin-left:10px; transition:0.3s;}
+.navbar .nav-buttons button:hover{background:#b71c1c; color:white;}
+.cart-count{background:red; color:white; font-size:12px; padding:2px 6px; border-radius:50%; margin-left:5px;}
+.menu-page{padding:40px 80px;}
+.menu-header{display:flex; gap:20px; background:white; padding:20px; border-radius:12px; align-items:center;}
+.menu-header img{width:200px; height:150px; border-radius:10px;}
+.rating{background:#d62300; color:white; padding:4px 10px; border-radius:5px;}
+.menu-container{margin-top:20px; display:flex; flex-direction:column; gap:20px;}
+.menu-card{display:flex; justify-content:space-between; background:white; padding:18px; border-radius:10px; opacity:0; transform: translateY(20px); transition: all 0.5s ease, box-shadow 0.3s ease;}
+.menu-card.show{opacity:1; transform: translateY(0);}
+.menu-card:hover{transform: scale(1.03); box-shadow: 0 8px 20px rgba(0,0,0,0.2);}
+.price{color:#d62300; font-weight:bold;}
+.food-image img{width:120px; height:100px; border-radius:10px;}
+.add-btn{margin-top:8px; background:white; color:#d62300; border:2px solid #d62300; padding:6px 15px; border-radius:8px; cursor:pointer; font-weight:bold; transition: all 0.2s ease;}
+.add-btn:hover{background:#d62300; color:white;}
+.qty-box{margin-top:8px; display:none; align-items:center; justify-content:center; gap:10px;}
+.qty-box button{background:#d62300; color:white; border:none; width:28px; height:28px; border-radius:6px; cursor:pointer;}
+.qty{font-weight:bold; font-size:16px; width:20px; text-align:center; display:inline-block; transition: transform 0.2s ease;}
+.qty.animate{transform: scale(1.3);}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div>🍕 Pizza Hut</div>
+    <div class="nav-buttons">
+        <button onclick="goHome()">🏠 Home</button>
+        <button onclick="goToCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+    </div>
+</div>
+
+<section class="menu-page">
+
+<div class="menu-header">
+    <img src="img/Pizza-Hut-Logo-2010-500x281.webp">
+    <div class="menu-info">
+        <h1>Pizza Hut</h1>
+        <p>Pizzas, Italian, Fast Food</p>
+        <span class="rating">⭐ 4.2</span>
+    </div>
+</div>
+
+<h2>Popular Pizzas</h2>
+
+<div class="menu-container" id="menuContainer">
+<!-- Menu items will be generated dynamically here -->
+</div>
+</section>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Define all pizza items here (unique items)
+const menuItems = [
+    {name:"Margherita Pizza", price:199, img:"img/marg.webp", desc:"Classic cheese and tomato pizza"},
+    {name:"Veggie Supreme", price:299, img:"img/vegg.webp", desc:"Loaded with vegetables"},
+    {name:"Paneer Pizza", price:329, img:"img/pann.webp", desc:"Spicy paneer with cheese"},
+    {name:"Chicken Pizza", price:349, img:"img/chi.webp", desc:"Chicken with cheese topping"},
+    {name:"Farmhouse Pizza", price:319, img:"img/farm.webp", desc:"Veg pizza with capsicum & onion"},
+    {name:"Pepperoni Feast", price:399, img:"img/chi.webp", desc:"Cheese & pepperoni combo"},
+    {name:"Tandoori Paneer", price:359, img:"img/panner.webp", desc:"Paneer with tandoori spices"},
+    {name:"Cheese Burst", price:429, img:"img/marg.webp", desc:"Extra cheesy delight"},
+];
+
+const menuContainer = document.getElementById("menuContainer");
+
+// Dynamically create menu cards
+menuItems.forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "menu-card";
+    card.innerHTML = `
+        <div>
+            <h3>${item.name}</h3>
+            <p>${item.desc}</p>
+            <div class="price">₹${item.price}</div>
+        </div>
+        <div class="food-image">
+            <img src="${item.img}"><br>
+            <button class="add-btn" id="add-${item.name}" onclick="addItem('${item.name}',${item.price},'${item.img}')">ADD</button>
+            <div class="qty-box" id="box-${item.name}">
+                <button onclick="changeQty('${item.name}',-1)">−</button>
+                <span class="qty" id="qty-${item.name}">1</span>
+                <button onclick="changeQty('${item.name}',1)">+</button>
+            </div>
+        </div>
+    `;
+    menuContainer.appendChild(card);
+});
+
+// Cart Functions
+function addItem(name, price, image){
+    let found = cart.find(i=>i.name===name);
+    if(found) found.qty++;
+    else cart.push({name,price,image,qty:1});
+    saveCart();
+    updateUI();
+}
+
+function changeQty(name, change){
+    let item = cart.find(i=>i.name===name);
+    if(!item) return;
+    item.qty += change;
+    if(item.qty <= 0) cart = cart.filter(i=>i.name!==name);
+    saveCart();
+    updateUI();
+    let qty = document.getElementById("qty-"+name);
+    if(qty){ qty.classList.add("animate"); setTimeout(()=> qty.classList.remove("animate"),200);}
+}
+
+function saveCart(){ localStorage.setItem("cart", JSON.stringify(cart)); }
+
+function updateUI(){
+    document.querySelectorAll(".add-btn").forEach(btn=>btn.style.display="inline-block");
+    document.querySelectorAll(".qty-box").forEach(box=>box.style.display="none");
+
+    cart.forEach(item=>{
+        let addBtn=document.getElementById("add-"+item.name);
+        let box=document.getElementById("box-"+item.name);
+        let qty=document.getElementById("qty-"+item.name);
+        if(addBtn && box && qty){
+            addBtn.style.display="none";
+            box.style.display="flex";
+            qty.innerText=item.qty;
+        }
+    });
+
+    let total = cart.reduce((sum,i)=>sum+i.qty,0);
+    document.getElementById("cartCount").innerText = total;
+}
+
+// Animate menu cards
+window.addEventListener('load', ()=>{
+    document.querySelectorAll(".menu-card").forEach((card,index)=>{
+        setTimeout(()=> card.classList.add("show"), index*100);
+    });
+});
+
+function goToCart(){ window.location.href="cart.html"; }
+function goHome(){ window.location.href="index.html"; }
+
+updateUI();
+</script>
+
+</body>
+</html>

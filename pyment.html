@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - SNACCY</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Roboto',sans-serif;background:#f2f2f2;color:#333;}
+.navbar{background:#ff5200;color:white;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 6px rgba(0,0,0,0.1);}
+.navbar .logo{font-size:24px;font-weight:700;}
+.navbar .nav-links a{color:white;text-decoration:none;margin-left:25px;font-weight:500;}
+.checkout-container{display:flex;max-width:1200px;margin:40px auto;gap:30px;flex-wrap:wrap;}
+.checkout-left{flex:2;min-width:350px;}
+.step{background:white;padding:20px;margin-bottom:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+.step h3{margin-top:0;font-weight:500;font-size:18px;margin-bottom:15px;}
+.step input, .step select, .step textarea{width:100%;padding:10px;margin-bottom:12px;border-radius:6px;border:1px solid #ccc;font-size:16px;}
+.step button{background:#ff5200;color:white;border:none;padding:12px 25px;border-radius:8px;font-size:16px;font-weight:500;cursor:pointer;}
+.step button:hover{background:#e64a00;}
+.checkout-right{flex:1;min-width:280px;}
+.cart-summary{background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+.cart-summary h3{margin-top:0;margin-bottom:15px;font-weight:500;}
+.cart-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;transition: all 0.3s ease;}
+.cart-item img{width:60px;height:60px;object-fit:cover;border-radius:8px;}
+.cart-item-details{flex:1;margin-left:12px;}
+.cart-item-details h4{margin:0;font-size:16px;font-weight:500;}
+.cart-item-details p{margin:3px 0 0;font-size:14px;color:#666;}
+.cart-item-qty{display:flex;align-items:center;gap:8px;}
+.cart-item-qty button{width:28px;height:28px;border:none;border-radius:6px;background:#ff5200;color:white;font-size:18px;cursor:pointer;}
+.cart-item-qty button:hover{background:#e64a00;}
+.cart-item-qty span{width:25px;text-align:center;font-weight:500;}
+.total-box{border-top:1px solid #eee;padding-top:15px;margin-top:15px;}
+.total-box p{display:flex;justify-content:space-between;margin:8px 0;font-weight:500;}
+.total-box .grand-total{font-size:18px;color:#ff5200;}
+.coupon-box{margin-top:20px;display:flex;gap:10px;}
+.coupon-box input{flex:1;padding:10px;border-radius:6px;border:1px solid #ccc;}
+.coupon-box button{padding:10px 18px;border:none;border-radius:6px;background:#28a745;color:white;font-weight:500;cursor:pointer;}
+.coupon-box button:hover{background:#218838;}
+.place-order-btn{width:100%;padding:15px;background:#ff5200;color:white;border:none;border-radius:8px;font-size:18px;font-weight:600;cursor:pointer;margin-top:15px;}
+.place-order-btn:hover{background:#e64a00;}
+.payment-options{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.payment-options button{flex:1 1 45%;padding:10px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer;text-align:center;font-weight:500;display:flex;align-items:center;justify-content:center;}
+.payment-options button:hover{border-color:#ff5200;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.payment-options img{width:30px;height:30px;vertical-align:middle;margin-right:8px;}
+.upi-qr{margin-top:15px;text-align:center;}
+.upi-qr img{width:150px;border-radius:12px;border:1px solid #ccc;}
+.error-msg{color:red;font-size:14px;margin-bottom:8px;display:none;}
+</style>
+</head>
+<body>
+<div class="navbar">
+    <div class="logo">SNACCY</div>
+    <div class="nav-links"><a href="#">🏠 Home</a><a href="#">🛒 Cart</a></div>
+</div>
+
+<div class="checkout-container">
+    <!-- LEFT -->
+    <div class="checkout-left">
+        <!-- ACCOUNT -->
+        <div class="step">
+            <h3>Account</h3>
+            <input type="text" placeholder="Full Name" id="fullName">
+            <div class="error-msg" id="emailError">Enter a valid email!</div>
+            <input type="email" placeholder="Email Address" id="email">
+            <div class="error-msg" id="phoneError">Enter a valid 10-digit phone number!</div>
+            <input type="text" placeholder="Phone Number" id="phone" value="+91">
+        </div>
+
+        <!-- DELIVERY ADDRESS -->
+        <div class="step">
+            <h3>Delivery Address</h3>
+            <input type="text" placeholder="House / Building / Street" id="address1">
+            <input type="text" placeholder="Locality / Area" id="address2">
+            <input type="text" placeholder="PIN Code" id="pincode" onblur="fetchCityState()">
+            <input type="text" placeholder="City" id="city" readonly>
+            <input type="text" placeholder="State" id="state" readonly>
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="step">
+            <h3>Payment</h3>
+            <div class="payment-options">
+                <button onclick="selectPayment('UPI')"><img src="img/gpay.png">Google Pay</button>
+                <button onclick="selectPayment('UPI')"><img src="img/phonepe.png">PhonePe</button>
+                <button onclick="selectPayment('UPI')"><img src="img/paytm.png">Paytm</button>
+                <button onclick="selectPayment('Card')"><img src="img/card.png">Card</button>
+                <button onclick="selectPayment('Amazon')"><img src="img/amazonpay.png">Amazon Pay</button>
+                <button onclick="selectPayment('Mobi')"><img src="img/mobiwik.png">MobiKwik</button>
+                <button onclick="selectPayment('Cash')">Cash on Delivery</button>
+            </div>
+            <div class="upi-qr" id="upiQR"></div>
+        </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="checkout-right">
+        <div class="cart-summary" id="cartSummary">
+            <h3>Order Summary</h3>
+        </div>
+        <div class="coupon-box">
+            <input type="text" id="couponCode" placeholder="Enter Coupon Code">
+            <button onclick="applyCoupon()">Apply</button>
+        </div>
+        <button class="place-order-btn" onclick="placeOrder()">Confirm Order & Pay</button>
+    </div>
+</div>
+
+<script>
+// Sample cart
+let cart = JSON.parse(localStorage.getItem("cart")) || [
+    {name:"Margherita", price:199, qty:1, img:"img/marg.webp"},
+    {name:"Veggie Supreme", price:299, qty:1, img:"img/vegg.webp"}
+];
+let discountApplied = false;
+
+// Render cart
+function renderCart(){
+    let container = document.getElementById("cartSummary");
+    container.innerHTML="";
+    if(cart.length===0){
+        container.innerHTML="<p>Your cart is empty!</p>";
+        return;
+    }
+    let subtotal=0;
+    cart.forEach((item,index)=>{
+        subtotal+=item.price*item.qty;
+        container.innerHTML+=`
+        <div class="cart-item">
+            <img src="${item.img}" onerror="this.src='img/placeholder.png'">
+            <div class="cart-item-details">
+                <h4>${item.name}</h4>
+                <p>₹${item.price}</p>
+            </div>
+            <div class="cart-item-qty">
+                <button onclick="changeQty(${index},-1)">−</button>
+                <span>${item.qty}</span>
+                <button onclick="changeQty(${index},1)">+</button>
+            </div>
+        </div>`;  
+    });
+    let gst=subtotal*0.05;
+    let total=subtotal+gst;
+    container.innerHTML+=`
+    <div class="total-box">
+        <p>Subtotal <span>₹${subtotal}</span></p>
+        <p>GST 5% <span>₹${gst.toFixed(2)}</span></p>
+        ${discountApplied ? '<p>Discount <span>-₹50</span></p>':''}
+        <p class="grand-total">Total <span>₹${(total-(discountApplied?50:0)).toFixed(2)}</span></p>
+    </div>`;
+}
+
+// Change quantity
+function changeQty(index,delta){
+    cart[index].qty += delta;
+    if(cart[index].qty < 1){
+        // Remove item if quantity is 0
+        if(confirm(`Remove ${cart[index].name} from cart?`)){
+            cart.splice(index,1);
+        }else{
+            cart[index].qty = 1;
+        }
+    }
+    renderCart();
+}
+
+// Coupon
+function applyCoupon(){
+    let code=document.getElementById("couponCode").value.trim();
+    if(code==="SNACCY50" && !discountApplied){
+        discountApplied=true;
+        alert("Coupon Applied! ₹50 OFF 🎉");
+        renderCart();
+    }else{
+        alert("Invalid Coupon Code!");
+    }
+}
+
+// Payment selection
+function selectPayment(method){
+    let upiDiv=document.getElementById("upiQR");
+    upiDiv.innerHTML="";
+    if(method==="UPI"){
+        upiDiv.innerHTML=`<img src="img/upi_qr.png" alt="Scan UPI QR">`;
+    }
+}
+
+// Place order validation
+function placeOrder(){
+    let email=document.getElementById("email").value.trim();
+    let phone=document.getElementById("phone").value.replace(/\D/g,'');
+    let emailValid=/^\S+@\S+\.\S+$/.test(email);
+    let phoneValid=/^\d{10}$/.test(phone);
+    if(!emailValid){document.getElementById("emailError").style.display="block";return;}else{document.getElementById("emailError").style.display="none";}
+    if(!phoneValid){document.getElementById("phoneError").style.display="block";return;}else{document.getElementById("phoneError").style.display="none";}
+    alert("Order Confirmed! 🎉 Redirecting to Payment Page");
+    localStorage.setItem("cart",JSON.stringify(cart));
+    window.location.href="payment.html";
+}
+
+// PIN CODE API fetch city & state
+async function fetchCityState(){
+    let pin=document.getElementById("pincode").value.trim();
+    if(pin.length===6){
+        try{
+            let res=await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+            let data=await res.json();
+            if(data[0].Status==="Success"){
+                let post=data[0].PostOffice[0];
+                document.getElementById("city").value=post.District;
+                document.getElementById("state").value=post.State;
+            }else{
+                alert("Invalid PIN Code");
+            }
+        }catch(e){alert("Error fetching city/state");}
+    }
+}
+
+renderCart();
+</script>
+</body>
+</html>

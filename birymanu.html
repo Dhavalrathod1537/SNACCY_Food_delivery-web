@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biryani House Menu</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    margin:0;
+    background:#f4f4f4;
+}
+
+/* NAVBAR */
+.navbar{
+background:#ff5200;
+color:white;
+padding:15px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.nav-left{
+font-size:20px;
+font-weight:bold;
+}
+
+.nav-right{
+display:flex;
+gap:15px;
+}
+
+.nav-right button{
+background:white;
+color:#ff5200;
+border:none;
+padding:8px 18px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.nav-right button:hover{
+background:#ffe5d6;
+}
+
+/* PAGE */
+.menu-page{
+    padding:40px 80px;
+}
+
+/* HEADER */
+.menu-header{
+    display:flex;
+    gap:20px;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+}
+
+.menu-header img{
+    width:200px;
+    height:150px;
+    border-radius:10px;
+}
+
+.menu-info p{
+    color:gray;
+}
+
+.rating{
+    background:green;
+    color:white;
+    padding:4px 10px;
+    border-radius:5px;
+}
+
+/* MENU */
+.menu-container{
+    margin-top:20px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.menu-card{
+    display:flex;
+    justify-content:space-between;
+    background:white;
+    padding:18px;
+    border-radius:10px;
+}
+
+.price{
+    color:#ff5200;
+    font-weight:bold;
+}
+
+.food-image img{
+    width:120px;
+    height:100px;
+    border-radius:10px;
+}
+
+/* ADD BUTTON */
+.add-btn{
+    margin-top:8px;
+    background:white;
+    color:#ff5200;
+    border:2px solid #ff5200;
+    padding:6px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* QTY BOX */
+.qty-box{
+    margin-top:8px;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+
+.qty-box button{
+    background:#ff5200;
+    color:white;
+    border:none;
+    width:28px;
+    height:28px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.qty{
+    font-weight:bold;
+    font-size:16px;
+    width:20px;
+    text-align:center;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+<div class="nav-left">
+🍛 Biryani House
+</div>
+
+<div class="nav-right">
+<button onclick="goToHome()">🏠 Home</button>
+<button onclick="goToCart()">🛒 Cart</button>
+</div>
+
+</div>
+
+<section class="menu-page">
+
+<!-- HEADER -->
+<div class="menu-header">
+
+<img src="img/bir logo.webp">
+
+<div class="menu-info">
+<h1>Biryani House</h1>
+<p>Hyderabadi, South Indian, Mughlai</p>
+<span class="rating">⭐ 4.5</span>
+</div>
+
+</div>
+
+<h2>Popular Biryani</h2>
+
+<div class="menu-container">
+
+<!-- ITEM 1 -->
+<div class="menu-card">
+<div>
+<h3>Chicken Dum Biryani</h3>
+<p>Traditional dum cooked chicken biryani</p>
+<div class="price">₹249</div>
+</div>
+
+<div class="food-image">
+<img src="img/bir.webp"><br>
+
+<button class="add-btn" id="add-Chicken Dum Biryani"
+onclick="addItem('Chicken Dum Biryani',249,'img/bir.webp')">ADD</button>
+
+<div class="qty-box" id="box-Chicken Dum Biryani">
+<button onclick="changeQty('Chicken Dum Biryani',-1)">−</button>
+<span class="qty" id="qty-Chicken Dum Biryani">1</span>
+<button onclick="changeQty('Chicken Dum Biryani',1)">+</button>
+</div>
+
+</div>
+</div>
+
+<!-- ITEM 2 -->
+<div class="menu-card">
+<div>
+<h3>Mutton Biryani</h3>
+<p>Rich and flavorful mutton biryani</p>
+<div class="price">₹299</div>
+</div>
+
+<div class="food-image">
+<img src="img/moo.webp"><br>
+
+<button class="add-btn" id="add-Mutton Biryani"
+onclick="addItem('Mutton Biryani',299,'img/moo.webp')">ADD</button>
+
+<div class="qty-box" id="box-Mutton Biryani">
+<button onclick="changeQty('Mutton Biryani',-1)">−</button>
+<span class="qty" id="qty-Mutton Biryani">1</span>
+<button onclick="changeQty('Mutton Biryani',1)">+</button>
+</div>
+
+</div>
+</div>
+
+<!-- ITEM 3 -->
+<div class="menu-card">
+<div>
+<h3>Veg Biryani</h3>
+<p>Fresh vegetables with basmati rice</p>
+<div class="price">₹199</div>
+</div>
+
+<div class="food-image">
+<img src="img/veg.webp"><br>
+
+<button class="add-btn" id="add-Veg Biryani"
+onclick="addItem('Veg Biryani',199,'img/veg.webp')">ADD</button>
+
+<div class="qty-box" id="box-Veg Biryani">
+<button onclick="changeQty('Veg Biryani',-1)">−</button>
+<span class="qty" id="qty-Veg Biryani">1</span>
+<button onclick="changeQty('Veg Biryani',1)">+</button>
+</div>
+
+</div>
+</div>
+
+<!-- ITEM 4 -->
+<div class="menu-card">
+<div>
+<h3>Paneer Biryani</h3>
+<p>Paneer cubes with aromatic spices</p>
+<div class="price">₹229</div>
+</div>
+
+<div class="food-image">
+<img src="img/panner.webp"><br>
+
+<button class="add-btn" id="add-Paneer Biryani"
+onclick="addItem('Paneer Biryani',229,'img/panner.webp')">ADD</button>
+
+<div class="qty-box" id="box-Paneer Biryani">
+<button onclick="changeQty('Paneer Biryani',-1)">−</button>
+<span class="qty" id="qty-Paneer Biryani">1</span>
+<button onclick="changeQty('Paneer Biryani',1)">+</button>
+</div>
+
+</div>
+</div>
+
+</div>
+</section>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+/* ADD ITEM */
+function addItem(name, price, img){
+
+let existing = cart.find(i => i.name === name);
+
+if(existing){
+existing.qty += 1;
+}else{
+cart.push({name, price, img, qty:1});
+}
+
+saveCart();
+updateUI();
+}
+
+/* CHANGE QTY */
+function changeQty(name, change){
+
+let item = cart.find(i => i.name === name);
+
+if(item){
+item.qty += change;
+
+if(item.qty <= 0){
+cart = cart.filter(i => i.name !== name);
+}
+}
+
+saveCart();
+updateUI();
+}
+
+/* SAVE */
+function saveCart(){
+localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+/* UPDATE UI */
+function updateUI(){
+
+document.querySelectorAll(".add-btn").forEach(btn=>btn.style.display="inline-block");
+document.querySelectorAll(".qty-box").forEach(box=>box.style.display="none");
+
+cart.forEach(item=>{
+
+let addBtn = document.getElementById("add-"+item.name);
+let box = document.getElementById("box-"+item.name);
+let qty = document.getElementById("qty-"+item.name);
+
+if(addBtn){
+addBtn.style.display="none";
+box.style.display="flex";
+qty.innerText=item.qty;
+}
+
+});
+
+}
+
+/* NAVIGATION */
+function goToCart(){
+window.location.href="cart.html";
+}
+
+function goToHome(){
+window.location.href="index.html";
+}
+
+updateUI();
+
+</script>
+
+</body>
+</html>
